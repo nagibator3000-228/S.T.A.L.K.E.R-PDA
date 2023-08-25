@@ -1,0 +1,18 @@
+*, html {
+   border-radius: border-box;
+   margin: 0;
+   padding: 0;
+   user-select: none;
+   font-family: "cutive-mono", monospace;
+}
+
+body {
+   background-image: url("./../../assets/img/chernobyl.jpg");
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 100vh;
+}
+
+#message {
+   flex-wrap: wrap;
+}

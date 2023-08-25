@@ -1,0 +1,102 @@
+*, html {
+   border-radius: border-box;
+   margin: 0;
+   padding: 0;
+   user-select: none;
+   font-family: "cutive-mono", monospace;
+}
+
+body {
+   background-image: url("./../../assets/img/chernobyl.jpg");
+   background-repeat: no-repeat;
+   height: 100vh;
+   width: 100vw;
+}
+
+hr {
+   width: 250px;
+   margin: 1px;
+   padding: 0;
+}
+
+.custom-container {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   margin: 0;
+   padding: 0;
+   height: 100vh;
+}
+
+.image-container {
+   padding: 30px;
+   padding-right: 10px;
+   height: auto;
+}
+
+.PDA_image {
+   height: auto;
+   max-height: 90vh;
+   max-width: 90%;
+   width: auto;
+}
+
+.stats-container {
+   flex: 1;
+   width: 200px;
+   padding-top: 30px;
+}
+
+.stats {
+   display: flex;
+   flex-direction: column;
+}
+
+.stat {
+   display: flex;
+   &>h5 {
+      margin-right: 1.6em;
+      margin-bottom: 0.3em;
+   }
+}
+
+#health {
+   font-weight: bold;
+   margin-left: 6.5em;
+   font-size: larger;
+}
+
+#rad {
+   @extend #health;
+   font-size: large !important;
+}
+
+#bio {
+   @extend #rad;
+}
+
+#psy {
+   @extend #rad;
+}
+
+#temp {
+   @extend #rad;
+   &::after {
+      margin-left: 2px;
+      content: "°";
+   }
+}
+
+#tasks {
+   top: 0;
+   margin-top: 0;
+   padding-top: 0;
+   &>h4 {
+      text-decoration: underline;
+      color: rgb(255, 255, 255);
+      margin-top: 3px;
+   }
+   &>#task p {
+      color: rgb(252, 252, 252);
+   }
+}
