@@ -92,7 +92,7 @@ io.on("connection", (socket) => {
    });
 });
 
-http.listen(process.env.PORT, process.env.IP, () => {
+http.listen(process.env.PORT, () => {
    console.log("starting...");
    try {
       let date = new Date();
