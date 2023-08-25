@@ -1,4 +1,4 @@
-const socket = io("192.168.178.50:3000", { transports: ["websocket"] });
+const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
 
 var data = {
    group: "",
