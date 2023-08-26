@@ -9,8 +9,10 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.static(__dirname));
 
-const KEYS = process.env.VALID_API_KEYS;
+var sockets = [];
+var count_of_sockets = 0;
 
+const KEYS = process.env.VALID_API_KEYS;
 const validApiKeys = KEYS.split(',');
 
 app.get('/', (req, res) => {
@@ -51,9 +53,6 @@ app.get('/admin/API/:API_KEY', (req, res) => {
    }
 });
 
-var sockets = [];
-var count_of_sockets = 0;
-
 io.on("connection", (socket) => {
    var date = new Date();
    var month = date.getMonth() + 1;
@@ -73,8 +72,10 @@ io.on("connection", (socket) => {
    socket.on("admin-send", (data) => {
       const parsed_data = JSON.parse(data);
       if (parsed_data.task !== '') {
+         console.log("get");
          io.in(parsed_data.group).emit('get-task', JSON.stringify(parsed_data));
       } else {
+         console.log("clear");
          io.in(parsed_data.group).emit('clear', JSON.stringify(parsed_data));
       }
    });
