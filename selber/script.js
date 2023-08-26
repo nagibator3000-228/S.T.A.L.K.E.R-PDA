@@ -31,3 +31,12 @@ function send() {
    console.log(data);
    socket.emit("admin-send", JSON.stringify(data));
 }
+
+function clear() {
+   document.getElementById("modal-body").innerHTML = `<span><h3>Group: ${data.group}</h3><br><p id="message">Clear Task</p></span>`;
+   data.task = '';
+}
+
+function send_clear() {
+   socket.emit("admin-send", JSON.stringify(data));
+}
