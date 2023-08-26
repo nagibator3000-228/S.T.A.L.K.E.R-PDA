@@ -21,24 +21,6 @@ socket.on("disconnect", () => {
 });
 
 $(document).ready(() => {
-   if ('wakeLock' in navigator) {
-      let wakeLock = null;
-      const requestWakeLock = async () => {
-         try {
-            wakeLock = await navigator.wakeLock.request('screen');
-            console.log('Активность экрана запрошена');
-         } catch (error) {
-            console.error('Не удалось запросить активность экрана:', error);
-         }
-      };
-
-      document.addEventListener('click', () => {
-         if (!wakeLock) {
-            requestWakeLock();
-         }
-      });
-   }
-
    var dropdownItems = document.querySelectorAll('.dropdown-item');
 
    dropdownItems.forEach((item) => {
@@ -55,5 +37,9 @@ $(document).ready(() => {
          }
       });
    });
+
+   if (document.getElementById("health").innerText < 50) {
+      document.getElementById("health").classList.add("text-warning");
+   }
 });
 
