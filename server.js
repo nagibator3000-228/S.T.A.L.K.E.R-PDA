@@ -8,6 +8,9 @@ require('dotenv').config();
 
 app.use(cors());
 app.use(express.static(__dirname));
+app.use((req, res, next) => {
+   res.status(404).send("Слышь, брат, страница не найдена! Чё ты тут забыл?");
+});
 
 var sockets = [];
 var count_of_sockets = 0;
@@ -70,11 +73,11 @@ io.on("connection", (socket) => {
    });
 
    socket.on("admin-send", (data) => {
-      const parsed_data = JSON.parse(data);
       if (parsed_data.task !== '') {
+         const parsed_data = JSON.parse(data);
          io.in(parsed_data.group).emit('get-task', JSON.stringify(parsed_data));
       } else {
-         io.in(parsed_data.group).emit('clear', JSON.stringify(parsed_data));
+         io.in(parsed_data.group).emit('clear');
       }
    });
 
