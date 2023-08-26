@@ -6,7 +6,7 @@ const cors = require("cors");
 const os = require('os');
 require('dotenv').config();
 
-app.use(cors());
+app.use(cors({origin: '*', methods: ["GET"]}));
 app.use(express.static(__dirname));
 
 var sockets = [];
