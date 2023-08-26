@@ -72,10 +72,8 @@ io.on("connection", (socket) => {
    socket.on("admin-send", (data) => {
       const parsed_data = JSON.parse(data);
       if (parsed_data.task !== '') {
-         console.log("get");
          io.in(parsed_data.group).emit('get-task', JSON.stringify(parsed_data));
       } else {
-         console.log("clear");
          io.in(parsed_data.group).emit('clear', JSON.stringify(parsed_data));
       }
    });

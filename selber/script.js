@@ -2,7 +2,7 @@ const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] }
 
 var data = {
    group: "",
-   task: ""
+   task: "",
 }
 
 $(document).ready(() => {
@@ -29,14 +29,5 @@ function check() {
 function send() {
    document.getElementById("task").value = '';
    console.log(data);
-   socket.emit("admin-send", JSON.stringify(data));
-}
-
-function clear() {
-   document.getElementById("modal-body").innerHTML = `<span><h3>Group: ${data.group}</h3><br><p id="message">Clear Task</p></span>`;
-   data.task = '';
-}
-
-function send_clear() {
    socket.emit("admin-send", JSON.stringify(data));
 }
