@@ -72,7 +72,11 @@ io.on("connection", (socket) => {
 
    socket.on("admin-send", (data) => {
       const parsed_data = JSON.parse(data);
-      io.in(parsed_data.group).emit('get-task', JSON.stringify(parsed_data));
+      if (parsed_data.task !== '') {
+         io.in(parsed_data.group).emit('get-task', JSON.stringify(parsed_data));
+      } else {
+         io.in(parsed_data.group).emit('clear', JSON.stringify(parsed_data));
+      }
    });
 
    socket.on("disconnect", () => {

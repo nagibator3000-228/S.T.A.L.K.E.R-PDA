@@ -10,6 +10,10 @@ socket.on("connect", () => {
       console.log(parsed_data);
       document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
    });
+
+   socket.on("clear", () => {
+      document.getElementById("task").innerHTML = ``;
+   });
 });
 
 socket.on("disconnect", () => {
