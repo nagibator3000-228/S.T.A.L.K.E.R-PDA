@@ -37,9 +37,11 @@ $(document).ready(() => {
          }
       });
    });
+   setInterval(check_stats, 144 / 1000);
+});
 
+function check_stats() {
    if (parseInt(document.getElementById("health").innerText) < 50) {
       document.getElementById("health").classList.add("text-warning");
    }
-});
-
+}
