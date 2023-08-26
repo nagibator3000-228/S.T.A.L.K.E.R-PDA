@@ -38,7 +38,7 @@ $(document).ready(() => {
       });
    });
 
-   if (document.getElementById("health").innerText < 50) {
+   if (parseInt(document.getElementById("health").innerText) < 50) {
       document.getElementById("health").classList.add("text-warning");
    }
 });
