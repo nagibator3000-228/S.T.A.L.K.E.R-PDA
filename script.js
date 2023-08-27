@@ -2,6 +2,16 @@ const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] }
 
 var group = '';
 
+var coords = {
+   lat: "",
+   long: ""
+}
+
+const infectionPoints = [
+   { name: "rad", latitude: 55.7558, longitude: 37.6176, radius: 0.01 },
+   { name: "bio", latitude: 55.7565, longitude: 37.6180, radius: 0.02 },
+];
+
 socket.on("connect", () => {
    console.log("Conected");
 
@@ -21,6 +31,9 @@ socket.on("disconnect", () => {
 });
 
 $(document).ready(() => {
+   getLocation();
+   checkInfectionStatus();
+
    var dropdownItems = document.querySelectorAll('.dropdown-item');
 
    dropdownItems.forEach((item) => {
@@ -38,7 +51,19 @@ $(document).ready(() => {
       });
    });
    setInterval(check_stats, 1000 / 60);
+   setInterval(checkInfectionStatus, 1000 / 60);
 });
+
+function getLocation() {
+   if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+         coords.lat = position.coords.latitude;
+         coords.long = position.coords.longitude;
+      }, (error) => {
+         alert(new Error("Error: " + error.message));
+      });
+   }
+}
 
 function check_stats() {
    var healthElement = document.getElementById("health");
@@ -109,18 +134,35 @@ function check_stats() {
    }
 }
 
-function getLocation() {
-   if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-   } else {
-      document.getElementById('result').innerHTML = 'Geolocation is not supported by this browser.';
-   }
+function calculateDistance(lat1, lon1, lat2, lon2) {
+   const R = 6371;
+   const dLat = (lat2 - lat1) * (Math.PI / 180);
+   const dLon = (lon2 - lon1) * (Math.PI / 180);
+   const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+   const distance = R * c;
+   return distance;
 }
 
-function showPosition(position) {
-   document.getElementById('result').innerHTML = '<p>Latitude: ' + position.coords.latitude + '</p><p><br>Longitude: ' + position.coords.longitude + '</p>';
-}
+function checkInfectionStatus() {
+   getLocation();
+   infectionPoints.forEach(point => {
+      const distance = calculateDistance(
+         coords.lat,
+         coords.long,
+         point.latitude,
+         point.longitude
+      );
 
-function showError(error) {
-   document.getElementById('result').innerHTML = 'Error: ' + error.message;
-}
+      document.getElementById("result").innerHTML = `<p>${point.name} : ${distance} | cords: ${JSON.stringify(coords)}</p>`;
+
+      if (distance <= point.radius) {
+         alert(`Братишка, ты подхватил заражение в зоне ${point.name}!`);
+      }
+   });
+};
