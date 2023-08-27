@@ -8,7 +8,6 @@ var coords = {
 }
 
 const infectionPoints = [
-   { name: "rad", latitude: 55.7558, longitude: 37.6176, radius: 0.01 },
    { name: "bio", latitude: 55.7565, longitude: 37.6180, radius: 0.02 },
 ];
 
