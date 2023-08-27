@@ -6,14 +6,14 @@ const cors = require("cors");
 const os = require('os');
 require('dotenv').config();
 
-app.use(cors({origin: '*', methods: ["GET"]}));
-app.use(express.static(__dirname));
+const KEYS = process.env.VALID_API_KEYS;
+const validApiKeys = KEYS.split(',');
 
 var sockets = [];
 var count_of_sockets = 0;
 
-const KEYS = process.env.VALID_API_KEYS;
-const validApiKeys = KEYS.split(',');
+app.use(cors({origin: '*', methods: ["GET"]}));
+app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
@@ -46,7 +46,7 @@ app.get('/admin/API/:API_KEY', (req, res) => {
       }
    });
 
-   if (authorized) {
+   if (authorized === true) {
       res.sendFile(__dirname + '/selber/index.html');
    } else {
       res.status(403).sendFile(__dirname + '/forbidden.html');
