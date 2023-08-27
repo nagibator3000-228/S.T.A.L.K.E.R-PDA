@@ -2,6 +2,8 @@ const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] }
 
 var group = '';
 
+var distance = 0;
+
 var coords = {
    lat: 0.0,
    long: 0.0
@@ -136,14 +138,14 @@ function check_stats() {
 async function checkInfectionStatus () {
    await getLocation();
    infectionPoints.forEach(point => {
-      const distance = geolib.getDistance(
+      distance = geolib.getDistance(
          { latitude: coords.lat, longitude: coords.long },
          { latitude: point.latitude, longitude: point.longitude }
       );
 
       document.getElementById("result").innerHTML = `<p>${point.name} : ${parseFloat(distance.toFixed(50))} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
       if (distance <= point.radius) {
-         console.log("inside");
+         console.log("inside" + point.name);
       }
    });
 };
