@@ -133,13 +133,13 @@ function check_stats() {
    }
 }
 
-function checkInfectionStatus() {
-   getLocation();
+async function checkInfectionStatus () {
+   await getLocation();
    infectionPoints.forEach(point => {
       const distance = geolib.getDistance(
          { latitude: coords.lat, longitude: coords.long },
          { latitude: point.latitude, longitude: point.longitude }
-       );
+      );
 
       document.getElementById("result").innerHTML = `<p>${point.name} : ${parseFloat(distance.toFixed(50))} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
       if (distance <= point.radius) {
