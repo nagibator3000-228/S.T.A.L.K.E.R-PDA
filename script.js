@@ -158,7 +158,7 @@ function checkInfectionStatus() {
          point.longitude
       );
 
-      document.getElementById("result").innerHTML = `<p>${point.name} : ${distance} | cords: ${JSON.stringify(coords)}</p>`;
+      document.getElementById("result").innerHTML = `<p>${point.name} : ${distance.toFixed(10)} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
 
       if (distance <= point.radius) {
          alert(`Братишка, ты подхватил заражение в зоне ${point.name}!`);
