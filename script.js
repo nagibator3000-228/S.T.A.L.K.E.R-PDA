@@ -57,7 +57,7 @@ function getLocation() {
    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
          coords.lat = position.coords.latitude;
-         coords.long = position.coords.longitude;
+         coords.long = position.coords.longitude += 1;
       }, (error) => {
          alert(new Error("Error: " + error.message));
       });
