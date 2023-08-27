@@ -101,7 +101,6 @@ io.on("connection", (socket) => {
 
 http.listen(process.env.PORT, () => {
    console.log("starting...");
-   console.log(validApiKeys);
    try {
       let date = new Date();
       let month = date.getMonth() + 1;
