@@ -37,9 +37,90 @@ $(document).ready(() => {
          }
       });
    });
-   setInterval(check_stats, 60 / 1000);
+   setInterval(check_stats, 1000 / 60);
 });
 
 function check_stats() {
+   var healthElement = document.getElementById("health");
+   var currentHealth = parseInt(healthElement.innerText);
+   var radElement = document.getElementById("rad");
+   var currentRad = parseInt(radElement.innerText);
+   var bioElement = document.getElementById("bio");
+   var currentBio = parseInt(bioElement.innerText);
+   var psyElement = document.getElementById("psy");
+   var currentPsy = parseInt(psyElement.innerText);
+   var tempElement = document.getElementById("temp");
+   var currentTemp = parseInt(tempElement.innerText);
 
+
+   if (currentHealth < 20) {
+      healthElement.classList.remove("text-success", "text-warning");
+      healthElement.classList.add("text-danger");
+   } else if (currentHealth < 50) {
+      healthElement.classList.remove("text-success", "text-danger");
+      healthElement.classList.add("text-warning");
+   } else {
+      healthElement.classList.remove("text-warning", "text-danger");
+      healthElement.classList.add("text-success");
+   }
+
+   if (currentRad > 100) {
+      radElement.classList.remove("text-success", "text-warning");
+      radElement.classList.add("text-danger");
+   } else if (currentRad > 50) {
+      radElement.classList.remove("text-success", "text-danger");
+      radElement.classList.add("text-warning");
+   } else {
+      radElement.classList.remove("text-warning", "text-danger");
+      radElement.classList.add("text-success");
+   }
+
+   if (currentBio > 70) {
+      bioElement.classList.remove("text-success", "text-warning");
+      bioElement.classList.add("text-danger");
+   } else if (currentBio > 20) {
+      bioElement.classList.remove("text-success", "text-danger");
+      bioElement.classList.add("text-warning");
+   } else {
+      bioElement.classList.remove("text-warning", "text-danger");
+      bioElement.classList.add("text-success");
+   }
+
+   if (currentPsy > 80) {
+      psyElement.classList.remove("text-success", "text-warning");
+      psyElement.classList.add("text-danger");
+   } else if (currentPsy > 25) {
+      psyElement.classList.remove("text-success", "text-danger");
+      psyElement.classList.add("text-warning");
+   } else {
+      psyElement.classList.remove("text-warning", "text-danger");
+      psyElement.classList.add("text-success");
+   }
+
+   if (currentTemp > 100) {
+      tempElement.classList.remove("text-success", "text-warning");
+      tempElement.classList.add("text-danger");
+   } else if (currentTemp > 50) {
+      tempElement.classList.remove("text-success", "text-danger");
+      tempElement.classList.add("text-warning");
+   } else {
+      tempElement.classList.remove("text-warning", "text-danger");
+      tempElement.classList.add("text-success");
+   }
+}
+
+function getLocation() {
+   if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+   } else {
+      document.getElementById('result').innerHTML = 'Geolocation is not supported by this browser.';
+   }
+}
+
+function showPosition(position) {
+   document.getElementById('result').innerHTML = '<p>Latitude: ' + position.coords.latitude + '</p><p><br>Longitude: ' + position.coords.longitude + '</p>';
+}
+
+function showError(error) {
+   document.getElementById('result').innerHTML = 'Error: ' + error.message;
 }
