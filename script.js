@@ -8,7 +8,7 @@ var coords = {
 }
 
 const infectionPoints = [
-   { name: "bio", latitude: 55.7565, longitude: 37.6180, radius: 0.02 },
+   { name: "bio", latitude: 55.7565, longitude: 37.6180, radius: 1 },
 ];
 
 socket.on("connect", () => {
@@ -57,7 +57,7 @@ function getLocation() {
    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
          coords.lat = position.coords.latitude;
-         coords.long = position.coords.longitude += 1;
+         coords.long = position.coords.longitude;
       }, (error) => {
          alert(new Error("Error: " + error.message));
       });
@@ -133,35 +133,17 @@ function check_stats() {
    }
 }
 
-function calculateDistance(lat1, lon1, lat2, lon2) {
-   const R = 6371;
-   const dLat = (lat2 - lat1) * (Math.PI / 180);
-   const dLon = (lon2 - lon1) * (Math.PI / 180);
-   const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-   const distance = R * c;
-   return distance;
-}
-
 function checkInfectionStatus() {
    getLocation();
    infectionPoints.forEach(point => {
-      const distance = calculateDistance(
-         coords.lat,
-         coords.long,
-         point.latitude,
-         point.longitude
-      );
+      const distance = geolib.getDistance(
+         { latitude: coords.lat, longitude: coords.long },
+         { latitude: point.latitude, longitude: point.longitude }
+       );
 
-      document.getElementById("result").innerHTML = `<p>${point.name} : ${distance.toFixed(10)} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
-
+      document.getElementById("result").innerHTML = `<p>${point.name} : ${parseFloat(distance.toFixed(50))} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
       if (distance <= point.radius) {
-         alert(`Братишка, ты подхватил заражение в зоне ${point.name}!`);
+         console.log("inside");
       }
    });
 };

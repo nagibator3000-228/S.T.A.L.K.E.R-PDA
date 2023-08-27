@@ -17,11 +17,13 @@
    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
       integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
       crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/geolib@3.3.4/lib/index.min.js"></script>
    <script src="./script.js"></script>
 </head>
 <body class="bg-dark">
    <div class="container-fluid custom-container">
-      <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Teams</a>
+      <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4"
+         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Teams</a>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
          aria-labelledby="offcanvasExampleLabel">
          <div class="offcanvas-header bg-dark">
@@ -38,7 +40,9 @@
                   <li><a class="dropdown-item" href="#Bandit">Bandit</a></li>
                   <li><a class="dropdown-item disabled" aria-disabled="true">O Sosnanie</a></li>
                   <li><a class="dropdown-item disabled" aria-disabled="true">Monolit</a></li>
-                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                     <hr class="dropdown-divider">
+                  </li>
                   <li><a class="dropdown-item" href="#">No Group</a></li>
                </ul>
             </div>
