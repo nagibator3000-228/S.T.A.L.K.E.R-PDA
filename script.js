@@ -3,8 +3,8 @@ const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] }
 var group = '';
 
 var coords = {
-   lat: "",
-   long: ""
+   lat: 0.0,
+   long: 0.0
 }
 
 const infectionPoints = [
