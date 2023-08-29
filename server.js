@@ -32,7 +32,7 @@ app.get('/admin/API/', (req, res) => {
          authorized = true;
       }
    });
-   
+
    if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
@@ -40,7 +40,7 @@ app.get('/admin/API/', (req, res) => {
          default: res.status(404);
       }
    } else {
-      res.status(403);
+      res.status(403).sendFile(__dirname + '/forbidden.html');
    }
 });
 
