@@ -37,12 +37,12 @@ app.get('/admin/API/', async (req, res)=> {
 
    if (authorized === true) {
       switch (req.query.file) {
-         case 'style.css': sendFile(__dirname + '/selber/style.css'); break; 
-         case 'script.js': sendFile(__dirname + '/selber/script.js'); break;
+         case 'style.css': res.sendFile(__dirname + '/selber/style.css'); break; 
+         case 'script.js': res.sendFile(__dirname + '/selber/script.js'); break;
          default: res.status(404);
       }
    } else {
-      sendFile(__dirname + '/forbidden.html');
+      res.sendFile(__dirname + '/forbidden.html');
    }
 });
 
