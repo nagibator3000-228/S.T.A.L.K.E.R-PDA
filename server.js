@@ -32,7 +32,7 @@ app.get('/admin/API/', (req, res) => {
          authorized = true;
       }
    });
-
+   console.log(validApiKeys);
    if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
