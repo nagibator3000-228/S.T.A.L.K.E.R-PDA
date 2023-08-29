@@ -8,20 +8,22 @@ require("dotenv").config();
 
 "use strict";
 
+const router = express.Router();
+
 const api_controller = require("./controllers/api_controller");
 const APIKey = require("./models/APIKey");
-
-var sockets = [];
-var count_of_sockets = 0;
 
 app.use(cors({origin: '*', methods: ["GET"]}));
 app.use(express.static(__dirname));
 
-app.get('/', (req, res) => {
+var sockets = [];
+var count_of_sockets = 0;
+
+router.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/admin/API/', (req, res) => {
+router.get('/admin/API/', (req, res) => {
    const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
@@ -44,27 +46,26 @@ app.get('/admin/API/', (req, res) => {
    }
 });
 
-app.get('/admin/API/style.css.map', (req, res) => {
+router.get('/admin/API/style.css.map', (req, res) => {
    res.status(200).sendFile(__dirname + '/selber/style.css.map');
 });
 
-app.get('/admin/API/script.js', (req, res) => {
+router.get('/admin/API/script.js', (req, res) => {
    res.status(200).sendFile(__dirname + '/selber/script.js');
 });
 
-app.get('/admin', (req, res) => {
+router.get('/admin', (req, res) => {
    res.status(403).sendFile(__dirname + '/forbidden.html');
 });
 
-app.get('/admin/API/:API_KEY', (req, res) => {
-   let providedApiKey = new APIKey(req.params.API_KEY);
+router.get('/admin/API/:API_KEY', (req, res) => {
+   const Apikey = new APIKey(req.params.API_KEY);
+   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
    let authorized = false;
 
-   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
-
    validApiKeys.forEach(validApiKey => {
-      if (providedApiKey.key === validApiKey) {
+      if (Apikey.key === validApiKey) {
          authorized = true;
       }
    });
@@ -76,9 +77,11 @@ app.get('/admin/API/:API_KEY', (req, res) => {
    }
 });
 
-app.use((req, res, next) => {
+router.use((req, res) => {
    res.status(404).send("Слышь, брат, страница не найдена! Чё ты тут забыл?");
 });
+
+app.use("/", router);
 
 io.on("connection", (socket) => {
    var date = new Date();
