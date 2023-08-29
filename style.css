@@ -92,6 +92,10 @@ hr {
   color: rgb(252, 252, 252);
 }
 
+#info {
+  background-color: red;
+}
+
 #result > p {
   color: white;
 }/*# sourceMappingURL=style.css.map */

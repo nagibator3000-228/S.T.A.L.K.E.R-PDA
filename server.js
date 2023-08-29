@@ -3,11 +3,13 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const cors = require("cors");
-const os = require('os');
-require('dotenv').config();
+const os = require("os");
+require("dotenv").config();
 
-const KEYS = process.env.VALID_API_KEYS;
-const validApiKeys = KEYS.split(',');
+"use strict";
+
+const api_controller = require("./controllers/api_controller");
+const APIKey = require("./models/APIKey");
 
 var sockets = [];
 var count_of_sockets = 0;
@@ -19,16 +21,34 @@ app.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/admin/API/style.css', (req, res) => {
-   res.sendFile(__dirname + '/selber/style.css');
+app.get('/admin/API/', (req, res) => {
+   const key = new APIKey(req.query.key);
+   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
+
+   let authorized = false;
+
+   validApiKeys.forEach(validApiKey => {
+      if (key.key === validApiKey) {
+         authorized = true;
+      }
+   });
+   if (authorized === true) {
+      switch (req.query.file) {
+         case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
+         case 'script.js': res.status(200).sendFile(__dirname + '/selber/script.js'); break;
+         default: res.status(404);
+      }
+   } else {
+      res.status(403);
+   }
 });
 
 app.get('/admin/API/style.css.map', (req, res) => {
-   res.sendFile(__dirname + '/selber/style.css.map');
+   res.status(200).sendFile(__dirname + '/selber/style.css.map');
 });
 
 app.get('/admin/API/script.js', (req, res) => {
-   res.sendFile(__dirname + '/selber/script.js');
+   res.status(200).sendFile(__dirname + '/selber/script.js');
 });
 
 app.get('/admin', (req, res) => {
@@ -36,18 +56,20 @@ app.get('/admin', (req, res) => {
 });
 
 app.get('/admin/API/:API_KEY', (req, res) => {
-   const providedApiKey = req.params.API_KEY;
+   let providedApiKey = new APIKey(req.params.API_KEY);
 
    let authorized = false;
 
+   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
+
    validApiKeys.forEach(validApiKey => {
-      if (providedApiKey === validApiKey) {
+      if (providedApiKey.key === validApiKey) {
          authorized = true;
       }
    });
 
    if (authorized === true) {
-      res.sendFile(__dirname + '/selber/index.html');
+      res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
       res.status(403).sendFile(__dirname + '/forbidden.html');
    }

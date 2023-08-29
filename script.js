@@ -4,6 +4,8 @@ var group = '';
 
 var distance = 0;
 
+var modal;
+
 var coords = {
    lat: 0.0,
    long: 0.0
@@ -32,6 +34,8 @@ socket.on("disconnect", () => {
 });
 
 $(document).ready(() => {
+   modal = new bootstrap.Modal(document.getElementById('info-modal'));
+
    getLocation();
    checkInfectionStatus();
 
@@ -62,6 +66,10 @@ function getLocation() {
          coords.long = position.coords.longitude;
       }, (error) => {
          alert(new Error("Error: " + error.message));
+         navigator.geolocation.getCurrentPosition((position) => {
+            coords.lat = position.coords.latitude;
+            coords.long = position.coords.longitude;
+         });
       });
    }
 }
@@ -77,7 +85,6 @@ function check_stats() {
    var currentPsy = parseInt(psyElement.innerText);
    var tempElement = document.getElementById("temp");
    var currentTemp = parseInt(tempElement.innerText);
-
 
    if (currentHealth < 20) {
       healthElement.classList.remove("text-success", "text-warning");
