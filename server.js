@@ -11,8 +11,6 @@ require("dotenv").config();
 const api_controller = require("./controllers/api_controller");
 const APIKey = require("./models/APIKey");
 
-let authorized = false;
-
 var sockets = [];
 var count_of_sockets = 0;
 
@@ -23,18 +21,18 @@ app.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/admin/API/', async (req, res)=> {
-   const apikey = new APIKey(req.query.key);
+app.get('/admin/API/', (req, res) => {
+   const key = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   authorized = false;
+   let authorized = false;
 
-   await validApiKeys.forEach(validApiKey => {
-      if (apikey.key === validApiKey) {
+   validApiKeys.forEach(validApiKey => {
+      if (key.key === validApiKey) {
          authorized = true;
       }
    });
-
+   
    if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
@@ -42,12 +40,16 @@ app.get('/admin/API/', async (req, res)=> {
          default: res.status(404);
       }
    } else {
-      res.sendFile(__dirname + '/forbidden.html');
+      res.status(403);
    }
 });
 
 app.get('/admin/API/style.css.map', (req, res) => {
    res.status(200).sendFile(__dirname + '/selber/style.css.map');
+});
+
+app.get('/admin/API/script.js', (req, res) => {
+   res.status(200).sendFile(__dirname + '/selber/script.js');
 });
 
 app.get('/admin', (req, res) => {
