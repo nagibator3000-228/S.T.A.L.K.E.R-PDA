@@ -11,6 +11,8 @@ require("dotenv").config();
 const api_controller = require("./controllers/api_controller");
 const APIKey = require("./models/APIKey");
 
+let authorized = false;
+
 var sockets = [];
 var count_of_sockets = 0;
 
@@ -21,13 +23,13 @@ app.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/admin/API/', (req, res) => {
+app.get('/admin/API/', async (req, res)=> {
    const apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   let authorized = false;
+   authorized = false;
 
-   validApiKeys.forEach(validApiKey => {
+   await validApiKeys.forEach(validApiKey => {
       if (apikey.key === validApiKey) {
          authorized = true;
       }
