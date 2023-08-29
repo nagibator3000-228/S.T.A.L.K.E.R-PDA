@@ -22,16 +22,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/admin/API/', (req, res) => {
-   const key = new APIKey(req.query.key);
+   const apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
    let authorized = false;
 
    validApiKeys.forEach(validApiKey => {
-      if (key.key === validApiKey) {
+      if (apikey.key === validApiKey) {
          authorized = true;
       }
    });
+
    if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
@@ -39,7 +40,7 @@ app.get('/admin/API/', (req, res) => {
          default: res.status(404);
       }
    } else {
-      res.status(403);
+      res.status(403).sendFile(__dirname + '/forbidden.html');
    }
 });
 
