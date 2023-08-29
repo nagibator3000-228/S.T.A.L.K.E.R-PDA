@@ -22,17 +22,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/admin/API/', (req, res) => {
-   const key = new APIKey(req.query.key);
+   const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
    let authorized = false;
 
    validApiKeys.forEach(validApiKey => {
-      if (key.key === validApiKey) {
+      if (Apikey.key === validApiKey) {
          authorized = true;
       }
    });
-   console.log(validApiKeys);
+
    if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
