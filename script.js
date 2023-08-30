@@ -18,7 +18,7 @@ const infectionPoints = [
 
 socket.on("connect", () => {
    console.log("Conected");
-
+1
    socket.on("get-task", (data) => {
       let parsed_data = JSON.parse(data);
       console.log(parsed_data);
@@ -37,11 +37,16 @@ socket.on("disconnect", () => {
 $(document).ready(() => {
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
-   if (navigator.geolocation) {
-      getLocation();
-   }
-
    checkInfectionStatus();
+
+   if (navigator.geolocation) {
+      const options = {
+         maximumAge: 0,
+         timeout: 100,
+         enableHighAccuracy: true
+      };
+      navigator.geolocation.watchPosition(successCallback, errorCallback, options);
+   }
 
    var dropdownItems = document.querySelectorAll('.dropdown-item');
 
@@ -59,26 +64,22 @@ $(document).ready(() => {
          }
       });
    });
-   setInterval(check_stats, 1000 / 45);
-   setInterval(checkInfectionStatus, 1000 / 60);
+   setInterval(check_stats, 1000 / 60);
 });
 
-function getLocation() {
-   const options = {
-      maximumAge: 0,
-      timeout: 3000,
-      enableHighAccuracy: true
-   };
+function successCallback(position) {
+   coords.lat = position.coords.latitude;
+   coords.long = position.coords.longitude;
+   document.getElementById("result").innerHTML = `<p>cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
+}
 
-   navigator.geolocation.getCurrentPosition((position) => {
-      coords.lat = position.coords.latitude;
-      coords.long = position.coords.longitude;
-   }, (error) => {
-      alert(`Error: ${new Error(error)}`);
-   }, options);
+function errorCallback(error) {
+   console.error(`Error: ${new Error(error)}`);
 }
 
 function check_stats() {
+   checkInfectionStatus();
+
    var healthElement = document.getElementById("health");
    var currentHealth = parseInt(healthElement.innerText);
    var radElement = document.getElementById("rad");
@@ -146,15 +147,13 @@ function check_stats() {
    }
 }
 
-async function checkInfectionStatus() {
-   await getLocation();
+function checkInfectionStatus() {
    infectionPoints.forEach(point => {
       distance = geolib.getDistance(
          { latitude: coords.lat, longitude: coords.long },
          { latitude: point.latitude, longitude: point.longitude }
       );
 
-      document.getElementById("result").innerHTML = `<p>cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
       if (distance <= point.radius) {
          console.log("inside " + point.name);
          document.getElementById("modal-title").innerText = `point: ${point.name}`;
