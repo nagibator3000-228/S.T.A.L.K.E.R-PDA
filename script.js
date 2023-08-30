@@ -12,13 +12,26 @@ var coords = {
 }
 
 const infectionPoints = [
-   { name: "bio", latitude: 47.998506, longitude: 8.819394, radius: 2 },
-   { name: "rad", latitude: 47.997878, longitude: 8.814730, radius: 4 },
+   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 2, strength: 5 },
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 3, strength: 9 },
+   { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 5, strength: 16 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 7, strength: 24 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 6 },
+   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 6, strength: 25 },
+   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 2, strength: 4 },
+   { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 4, strength: 7 },
+   { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 5, strength: 18 },
+   { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 4, strength: 3 },
+   { name: "rad", latitude: 47.997638, longitude: 8.820741, radius: 6, strength: 7 },
+   { name: "rad", latitude: 47.997369, longitude: 8.820891, radius: 5, strength: 8 },
+   { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 6, strength: 6 },
+   { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 3, strength: 4 },
+   { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 4, strength: 6 },
 ];
 
 socket.on("connect", () => {
    console.log("Conected");
-1
+
    socket.on("get-task", (data) => {
       let parsed_data = JSON.parse(data);
       console.log(parsed_data);
@@ -41,7 +54,7 @@ $(document).ready(() => {
 
    if (navigator.geolocation) {
       const options = {
-         maximumAge: 0,
+         maximumAge: 1,
          timeout: 100,
          enableHighAccuracy: true
       };
@@ -157,7 +170,7 @@ function checkInfectionStatus() {
       if (distance <= point.radius) {
          console.log("inside " + point.name);
          document.getElementById("modal-title").innerText = `point: ${point.name}`;
-         document.getElementById("modal-body").innerText = `you are inside ${point.name}, distance: ${distance}`;
+         document.getElementById("modal-body").innerText = `you are inside ${point.name}, point strength: ${point.strength}`;
          modal.show();
       }
    });
