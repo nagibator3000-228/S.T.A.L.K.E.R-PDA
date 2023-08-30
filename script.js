@@ -16,7 +16,7 @@ const infectionPoints = [
    { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 3, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 5, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 7, strength: 24 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 6 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 13, strength: 6 },       //? zone 2
    { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 6, strength: 25 },
    { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 2, strength: 4 },
    { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 4, strength: 7 },
@@ -27,6 +27,8 @@ const infectionPoints = [
    { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 6, strength: 6 },
    { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 3, strength: 4 },
    { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 4, strength: 6 },
+   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 30, strength: 0.05 },    //! locations
+   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 19, strength: 0.4 }      //! locations
 ];
 
 socket.on("connect", () => {
