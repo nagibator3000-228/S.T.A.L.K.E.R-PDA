@@ -70,7 +70,7 @@ $(document).ready(() => {
 function successCallback(position) {
    coords.lat = position.coords.latitude;
    coords.long = position.coords.longitude;
-   document.getElementById("result").innerHTML = `<p>cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
+   document.getElementById("result").innerHTML = `<p>cords: lat ${parseFloat(coords.lat).toFixed(6)} long ${parseFloat(coords.long).toFixed(6)}</p>`;
 }
 
 function errorCallback(error) {
