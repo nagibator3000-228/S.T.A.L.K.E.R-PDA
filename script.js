@@ -12,7 +12,8 @@ var coords = {
 }
 
 const infectionPoints = [
-   { name: "bio", latitude: 55.7565, longitude: 37.6180, radius: 1 },
+   { name: "bio", latitude: 47.998506, longitude: 8.819394, radius: 2 },
+   { name: "rad", latitude: 47.997878, longitude: 8.814730, radius: 4 },
 ];
 
 socket.on("connect", () => {
@@ -36,7 +37,10 @@ socket.on("disconnect", () => {
 $(document).ready(() => {
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
-   getLocation();
+   if (navigator.geolocation) {
+      getLocation();
+   }
+
    checkInfectionStatus();
 
    var dropdownItems = document.querySelectorAll('.dropdown-item');
@@ -55,23 +59,23 @@ $(document).ready(() => {
          }
       });
    });
-   setInterval(check_stats, 1000 / 60);
+   setInterval(check_stats, 1000 / 45);
    setInterval(checkInfectionStatus, 1000 / 60);
 });
 
 function getLocation() {
-   if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-         coords.lat = position.coords.latitude;
-         coords.long = position.coords.longitude;
-      }, (error) => {
-         alert(new Error("Error: " + error.message));
-         navigator.geolocation.getCurrentPosition((position) => {
-            coords.lat = position.coords.latitude;
-            coords.long = position.coords.longitude;
-         });
-      });
-   }
+   const options = {
+      maximumAge: 0,
+      timeout: 3000,
+      enableHighAccuracy: true
+   };
+
+   navigator.geolocation.getCurrentPosition((position) => {
+      coords.lat = position.coords.latitude;
+      coords.long = position.coords.longitude;
+   }, (error) => {
+      alert(`Error: ${new Error(error)}`);
+   }, options);
 }
 
 function check_stats() {
@@ -142,7 +146,7 @@ function check_stats() {
    }
 }
 
-async function checkInfectionStatus () {
+async function checkInfectionStatus() {
    await getLocation();
    infectionPoints.forEach(point => {
       distance = geolib.getDistance(
@@ -150,9 +154,12 @@ async function checkInfectionStatus () {
          { latitude: point.latitude, longitude: point.longitude }
       );
 
-      document.getElementById("result").innerHTML = `<p>${point.name} : ${parseFloat(distance.toFixed(50))} | cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
+      document.getElementById("result").innerHTML = `<p>cords: lat ${parseFloat(coords.lat).toFixed(5)} long ${parseFloat(coords.long).toFixed(5)}</p>`;
       if (distance <= point.radius) {
-         console.log("inside" + point.name);
+         console.log("inside " + point.name);
+         document.getElementById("modal-title").innerText = `point: ${point.name}`;
+         document.getElementById("modal-body").innerText = `you are inside ${point.name}, distance: ${distance}`;
+         modal.show();
       }
    });
 };
