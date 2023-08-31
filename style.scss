@@ -132,10 +132,3 @@ h5 {
    position: absolute;
    mix-blend-mode: color-burn;
 }
-
-
-#result {
-   &>p {
-      color: white;
-   }
-}
