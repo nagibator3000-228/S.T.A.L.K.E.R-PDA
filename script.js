@@ -98,7 +98,7 @@ $(document).ready(() => {
 
    dropdownItems.forEach((item) => {
       item.addEventListener('click', () => {
-         if (item.innerText !== 'No Group') {
+         if (item.innerText !== 'No Group / Reset') {
             group = item.innerText;
             let btn = document.querySelector('.dropdown-toggle');
             btn.innerText = group;
