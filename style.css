@@ -22,6 +22,10 @@ hr {
   padding: 0;
 }
 
+h5 {
+  color: white;
+}
+
 .custom-container {
   display: flex;
   align-items: flex-start;
@@ -94,6 +98,30 @@ hr {
 
 #info-modal-content {
   background-color: red;
+}
+
+#conn {
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+#connection {
+  color: white;
+  position: absolute;
+  padding-left: 5em;
+  margin-top: 1px;
+  font-size: x-small;
+  text-decoration: overline;
+}
+
+#conn_img {
+  margin-left: 2.05em;
+  margin-top: 3px;
+  position: absolute;
+  mix-blend-mode: color-burn;
 }
 
 #result > p {

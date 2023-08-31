@@ -23,14 +23,15 @@
 <body class="bg-dark">
    <div class="container-fluid custom-container">
       <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4"
-         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Teams</a>
+         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Settings</a>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
          aria-labelledby="offcanvasExampleLabel">
          <div class="offcanvas-header bg-dark">
-            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Teams</h5>
+            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Settings</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
          </div>
          <div class="offcanvas-body bg-dark">
+            <h5>Teams</h5>
             <div class="dropdown">
                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Change</button>
                <ul class="dropdown-menu">
@@ -38,18 +39,18 @@
                   <li><a class="dropdown-item" href="#Dolg">Dolg</a></li>
                   <li><a class="dropdown-item" href="#Svoboda">Svoboda</a></li>
                   <li><a class="dropdown-item" href="#Bandit">Bandit</a></li>
-                  <li><a class="dropdown-item disabled" aria-disabled="true">O Sosnanie</a></li>
-                  <li><a class="dropdown-item disabled" aria-disabled="true">Monolit</a></li>
-                  <li>
-                     <hr class="dropdown-divider">
-                  </li>
-                  <li><a class="dropdown-item" href="#">No Group</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">No Group / Reset</a></li>
                </ul>
             </div>
          </div>
       </div>
       <div class="image-container">
          <img src="assets/img/PDA.jpg" class="PDA_image img_fluid" alt="PDA">
+      </div>
+      <div class="conn">
+         <p id="connection" class="text-danger">disconnected</p>
+         <img src="assets/img/diconnect.jpg" alt="connection" height="12" width="12" id="conn_img">
       </div>
       <div class="stats-container">
          <strong>
@@ -58,13 +59,13 @@
          <hr>
          <div class="stats">
             <div class="stat mb-1 mt-1">
-               <h4>Health</h4>
-               <span id="health" class="text-success position-absolute">100</span>
+               <h4 class="text-light">Health</h4>
+               <span id="health" class="text-success position-absolute">0</span>
             </div>
             <hr>
             <div class="stat">
                <h5>Рад.</h5>
-               <span id="rad" class="text-success position-absolute">20</span>
+               <span id="rad" class="text-success position-absolute">0</span>
             </div>
             <div class="stat">
                <h5>Био.</h5>

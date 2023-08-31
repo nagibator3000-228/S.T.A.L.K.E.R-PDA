@@ -2,7 +2,23 @@ const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] }
 
 var group = '';
 
-var distance = 0;
+var infections = {
+   rad: 20,
+   bio: 0,
+   psy: 0,
+   temp: 23
+}
+
+var health = 100;
+
+var infect;
+var background_infect;
+
+var rad_min = 20;
+
+var health_flag = false;
+var background_flag = false;
+var flag = false;
 
 var modal;
 
@@ -11,27 +27,34 @@ var coords = {
    long: 0.0
 }
 
+var distance = 0;
+
 const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 2, strength: 5 },
    { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 3, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 5, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 7, strength: 24 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 13, strength: 6 },       //? zone 2
-   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 6, strength: 25 },
-   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 2, strength: 4 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 13, min: 60, background: true },       //? zone 2
+   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 9, strength: 25 },
+   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 3, strength: 4 },
    { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 4, strength: 7 },
    { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 5, strength: 18 },
    { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 4, strength: 3 },
    { name: "rad", latitude: 47.997638, longitude: 8.820741, radius: 6, strength: 7 },
    { name: "rad", latitude: 47.997369, longitude: 8.820891, radius: 5, strength: 8 },
-   { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 6, strength: 6 },
+   { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 13, strength: 6 },
    { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 3, strength: 4 },
    { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 4, strength: 6 },
-   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 30, strength: 0.05 },    //! locations
-   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 19, strength: 0.4 }      //! locations
+   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 30, min: 34, background: true },      //! locations
+   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 19, min: 55, background: true }       //! locations
 ];
 
 socket.on("connect", () => {
+   document.getElementById("connection").innerText = "connected";
+   document.getElementById("connection").classList.add("text-success");
+   document.getElementById("connection").classList.remove("text-danger");
+   document.getElementById("conn_img").src = "assets/img/connected.png"
+
    console.log("Conected");
 
    socket.on("get-task", (data) => {
@@ -47,12 +70,20 @@ socket.on("connect", () => {
 
 socket.on("disconnect", () => {
    console.log("Disconnected from server");
+
+   document.getElementById("connection").innerText = "disconnected";
+   document.getElementById("connection").classList.add("text-danger");
+   document.getElementById("connection").classList.remove("text-success");
+   document.getElementById("conn_img").src = "assets/img/disconnect.jpg"
 });
 
 $(document).ready(() => {
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
+
+   document.getElementById("rad").innerText = rad_min;
+   document.getElementById("health").innerText = health;
 
    if (navigator.geolocation) {
       const options = {
@@ -171,9 +202,48 @@ function checkInfectionStatus() {
 
       if (distance <= point.radius) {
          console.log("inside " + point.name);
-         document.getElementById("modal-title").innerText = `point: ${point.name}`;
-         document.getElementById("modal-body").innerText = `you are inside ${point.name}, point strength: ${point.strength}`;
-         modal.show();
+         // document.getElementById("modal-title").innerText = `point: ${point.name}`;
+         // document.getElementById("modal-body").innerText = `you are inside ${point.name}, point strength: ${point.strength}`;
+
+         if (point.background) {
+            if (!background_flag) {
+               background_flag = true;
+               rad_min = point.min;
+               document.getElementById("rad").innerText = rad_min;
+            }
+         } else {
+            clearInterval(background_infect);
+            if (!flag) {
+               // modal.show();
+               flag = true;
+               infect = setInterval(() => {
+                  switch (point.name) {
+                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = infections.rad; break;
+                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = infections.bio; break;
+                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = infections.psy; break;
+                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = infections.temp; break;
+                     default: console.log(`Erorr: ${new Error("undefined infection")}`);
+                  }
+               }, 500);
+            }
+         }
+      } else {
+         if (health < 0) health = 0;
+         if (health === 0) {
+            document.getElementById("modal-title").innerText = `DEATH`;
+            document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
+            modal.show();
+         }
+
+         if (infections.rad < rad_min) infections.rad = rad_min;
+         if (infections.bio < 0) infections.bio = 0;
+         if (infections.psy < 0) infections.psy = 0;
+
+         if (!health_flag) checkHealth();
       }
    });
 };
+
+function checkHealth() {
+   health_flag = true;
+}

@@ -50,10 +50,6 @@ router.get('/admin/API/style.css.map', (req, res) => {
    res.status(200).sendFile(__dirname + '/selber/style.css.map');
 });
 
-router.get('/admin/API/script.js', (req, res) => {
-   res.status(200).sendFile(__dirname + '/selber/script.js');
-});
-
 router.get('/admin', (req, res) => {
    res.status(403).sendFile(__dirname + '/forbidden.html');
 });
