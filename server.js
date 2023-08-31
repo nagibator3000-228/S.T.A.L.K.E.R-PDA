@@ -27,15 +27,15 @@ router.get('/admin/API/', (req, res) => {
    const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   let authorized = false;
+   this.authorized = false;
 
    validApiKeys.forEach(validApiKey => {
       if (Apikey.key === validApiKey) {
-         authorized = true;
+         this.authorized = true;
       }
    });
 
-   if (authorized === true) {
+   if (this.authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
          case 'script.js': res.status(200).sendFile(__dirname + '/selber/script.js'); break;
@@ -58,15 +58,15 @@ router.get('/admin/API/:API_KEY', (req, res) => {
    const Apikey = new APIKey(req.params.API_KEY);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   let authorized = false;
+   this.authorized = false;
 
    validApiKeys.forEach(validApiKey => {
       if (Apikey.key === validApiKey) {
-         authorized = true;
+         this.authorized = true;
       }
    });
 
-   if (authorized === true) {
+   if (this.authorized === true) {
       res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
       res.status(403).sendFile(__dirname + '/forbidden.html');

@@ -94,7 +94,7 @@ $(document).ready(() => {
       navigator.geolocation.watchPosition(successCallback, errorCallback, options);
    }
 
-   var dropdownItems = document.querySelectorAll('.dropdown-item');
+   const dropdownItems = document.querySelectorAll('.dropdown-item');
 
    dropdownItems.forEach((item) => {
       item.addEventListener('click', () => {
@@ -200,7 +200,6 @@ function checkInfectionStatus() {
       );
 
       if (distance <= point.radius) {
-         console.log("inside " + point.name);
          // document.getElementById("modal-title").innerText = `point: ${point.name}`;
          // document.getElementById("modal-body").innerText = `you are inside ${point.name}, point strength: ${point.strength}`;
 
@@ -211,7 +210,6 @@ function checkInfectionStatus() {
                document.getElementById("rad").innerText = rad_min;
             }
          } else {
-            clearInterval(background_infect);
             if (!flag) {
                // modal.show();
                flag = true;
