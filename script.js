@@ -28,6 +28,8 @@ var health_flag = false;
 var background_flag = false;
 var flag = false;
 var psy_death = true;
+var infect_flag = false;
+var infect_interval = false;
 
 var modal;
 
@@ -39,7 +41,7 @@ var coords = {
 var distance = 0.0;
 
 const infectionPoints = [
-   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
+   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5},
    { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 11, strength: 24 },
@@ -201,14 +203,14 @@ function check_stats() {
    }
 
    if (health < 0) health = 0;
-   if (health === 0 && !psy_death) {
+   if (parseInt(health) === 0 && !psy_death) {
       document.getElementById("modal-title").innerText = `DEATH`;
       document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
       modal.show();
    }
 
-   document.getElementById("health").innerHTML = `${health}`;
-   document.getElementById("psy").innerHTML = `${infections.psy}`;
+   document.getElementById("health").innerHTML = `${parseInt(health)}`;
+   document.getElementById("psy").innerHTML = `${parseInt(infections.psy)}`;
 
    if (infections.psy >= 25 && infections.psy < 80) {
       document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
@@ -229,6 +231,11 @@ function check_stats() {
 }
 
 function checkInfectionStatus() {
+   if (!infect_flag) {
+      health_flag = false;
+      infect_flag = true;
+   }
+   if (infect_interval) infect_flag = false;
    infectionPoints.forEach(point => {
       distance = geolib.getDistance(
          { latitude: coords.lat, longitude: coords.long },
@@ -245,7 +252,6 @@ function checkInfectionStatus() {
          } else {
             if (!flag) {
                flag = true;
-               health_flag = false;
 
                clearInterval(heal);
                clearInterval(rad_heal);
@@ -253,11 +259,12 @@ function checkInfectionStatus() {
                clearInterval(temp_heal);
 
                infect = setInterval(() => {
+                  infect_interval = true;
                   switch (point.name) {
-                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = infections.rad; health -= parseInt(1 * infections.rad * 0.1); break;
-                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = infections.bio; health -= parseInt(2 * infections.rad * 0.1);  break;
-                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = infections.psy; health -= parseInt(1 * infections.rad * 0.08);  break;
-                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = infections.temp; health -= parseInt(4 * infections.rad * 0.5);  break;
+                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = parseInt(infections.rad); health -= parseInt(1 * infections.rad * 0.05); break;
+                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(2 * infections.rad * 0.05);  break;
+                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(1 * infections.rad * 0.04);  break;
+                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(4 * infections.rad * 0.6);  break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
@@ -276,21 +283,22 @@ function checkHealth() {
    background_flag = false;
 
    clearInterval(infect);
+   infect_interval = false;
    heal = setInterval(() => {
-      if (health !== 100) health++;
+      if (health !== 100) health += 0.5;
       else clearInterval(heal);
    }, 1.5 * 1000);
 
    rad_heal = setInterval(() => {
-      if (infections.rad !== rad_min) infections.rad--;
+      if (infections.rad !== rad_min) infections.rad -= 0.5;
       else clearInterval(rad_heal);
-      document.getElementById("rad").innerHTML = `${infections.rad}`;
+      document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
    }, 1 * 1000);
 
    bio_heal = setInterval(() => {
-      if (infections.bio !== 0) infections.bio--;
+      if (infections.bio !== 0) infections.bio -= 0.5;
       else clearInterval(bio_heal);
-      document.getElementById("bio").innerHTML = `${infections.bio}`;
+      document.getElementById("bio").innerHTML = `${parseInt(infections.bio)}`;
    }, 2.5 * 1000);
 
    let psy_flag = false;
@@ -307,8 +315,8 @@ function checkHealth() {
    }
 
    temp_heal = setInterval(() => {
-      if (infections.temp !== temp_min) infections.temp--;
+      if (infections.temp !== temp_min) infections.temp -= 0.5;
       else clearInterval(temp_heal);
-      document.getElementById("temp").innerHTML = `${infections.temp}`;
+      document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
    }, 250);
 }
