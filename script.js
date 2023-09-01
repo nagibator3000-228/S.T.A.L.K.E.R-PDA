@@ -11,14 +11,23 @@ var infections = {
 
 var health = 100;
 
+var heal;
+var rad_heal;
+var bio_heal;
+var psy_heal;
+var temp_heal;
+
 var infect;
 var background_infect;
 
 var rad_min = 20;
+var temp_min = 23;
+var psy_min = 0;
 
 var health_flag = false;
 var background_flag = false;
 var flag = false;
+var psy_death = true;
 
 var modal;
 
@@ -27,26 +36,26 @@ var coords = {
    long: 0.0
 }
 
-var distance = 0;
+var distance = 0.0;
 
 const infectionPoints = [
-   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 2, strength: 5 },
-   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 3, strength: 9 },
-   { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 5, strength: 16 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 7, strength: 24 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 13, min: 60, background: true },       //? zone 2
-   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 9, strength: 25 },
-   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 3, strength: 4 },
-   { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 4, strength: 7 },
-   { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 5, strength: 18 },
-   { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 4, strength: 3 },
-   { name: "rad", latitude: 47.997638, longitude: 8.820741, radius: 6, strength: 7 },
-   { name: "rad", latitude: 47.997369, longitude: 8.820891, radius: 5, strength: 8 },
-   { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 13, strength: 6 },
-   { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 3, strength: 4 },
-   { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 4, strength: 6 },
-   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 30, min: 34, background: true },      //! locations
-   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 19, min: 55, background: true }       //! locations
+   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
+   { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 11, strength: 24 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 17, min: 60, background: true },       //? zone 2
+   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 13, strength: 25 },
+   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 4, strength: 4 },
+   { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 6, strength: 7 },
+   { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 8, strength: 18 },
+   { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 6, strength: 3 },
+   { name: "rad", latitude: 47.997638, longitude: 8.820741, radius: 9, strength: 7 },
+   { name: "rad", latitude: 47.997369, longitude: 8.820891, radius: 9, strength: 8 },
+   { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 17, strength: 6 },
+   { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 5, strength: 4 },
+   { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 7, strength: 6 },
+   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 44, min: 34, background: true },      //! locations
+   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 24, min: 55, background: true }       //! locations
 ];
 
 socket.on("connect", () => {
@@ -136,10 +145,10 @@ function check_stats() {
    var tempElement = document.getElementById("temp");
    var currentTemp = parseInt(tempElement.innerText);
 
-   if (currentHealth < 20) {
+   if (currentHealth < 21) {
       healthElement.classList.remove("text-success", "text-warning");
       healthElement.classList.add("text-danger");
-   } else if (currentHealth < 50) {
+   } else if (currentHealth < 51) {
       healthElement.classList.remove("text-success", "text-danger");
       healthElement.classList.add("text-warning");
    } else {
@@ -190,6 +199,33 @@ function check_stats() {
       tempElement.classList.remove("text-warning", "text-danger");
       tempElement.classList.add("text-success");
    }
+
+   if (health < 0) health = 0;
+   if (health === 0 && !psy_death) {
+      document.getElementById("modal-title").innerText = `DEATH`;
+      document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
+      modal.show();
+   }
+
+   document.getElementById("health").innerHTML = `${health}`;
+   document.getElementById("psy").innerHTML = `${infections.psy}`;
+
+   if (infections.psy >= 25 && infections.psy < 80) {
+      document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
+      document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
+      modal.show();
+   } else if (infections.psy >= 80) {
+      psy_death = false;
+      document.getElementById("modal-title").innerText = `DU BIST ZOMBIERT!!!!`;
+      document.getElementById("modal-body").innerText = `DU GREIFST ALLE AN UND KANNST NICHT DENKEN!!!`;
+      modal.show();
+   } else if (infections.psy < 0) {
+      console.error("psy infection Error");
+   }
+
+   if (infections.rad < rad_min) infections.rad = rad_min;
+   if (infections.bio < 0) infections.bio = 0;
+   if (infections.psy < 0) infections.psy = 0;
 }
 
 function checkInfectionStatus() {
@@ -199,10 +235,7 @@ function checkInfectionStatus() {
          { latitude: point.latitude, longitude: point.longitude }
       );
 
-      if (distance <= point.radius) {
-         // document.getElementById("modal-title").innerText = `point: ${point.name}`;
-         // document.getElementById("modal-body").innerText = `you are inside ${point.name}, point strength: ${point.strength}`;
-
+      if (parseFloat(distance) <= point.radius) {
          if (point.background) {
             if (!background_flag) {
                background_flag = true;
@@ -211,36 +244,71 @@ function checkInfectionStatus() {
             }
          } else {
             if (!flag) {
-               // modal.show();
                flag = true;
+               health_flag = false;
+
+               clearInterval(heal);
+               clearInterval(rad_heal);
+               clearInterval(bio_heal);
+               clearInterval(temp_heal);
+
                infect = setInterval(() => {
                   switch (point.name) {
-                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = infections.rad; break;
-                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = infections.bio; break;
-                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = infections.psy; break;
-                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = infections.temp; break;
+                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = infections.rad; health -= parseInt(1 * infections.rad * 0.1); break;
+                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = infections.bio; health -= parseInt(2 * infections.rad * 0.1);  break;
+                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = infections.psy; health -= parseInt(1 * infections.rad * 0.08);  break;
+                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = infections.temp; health -= parseInt(4 * infections.rad * 0.5);  break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
             }
          }
       } else {
-         if (health < 0) health = 0;
-         if (health === 0) {
-            document.getElementById("modal-title").innerText = `DEATH`;
-            document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
-            modal.show();
-         }
-
-         if (infections.rad < rad_min) infections.rad = rad_min;
-         if (infections.bio < 0) infections.bio = 0;
-         if (infections.psy < 0) infections.psy = 0;
-
          if (!health_flag) checkHealth();
       }
    });
 };
 
 function checkHealth() {
+   console.log("check health");
    health_flag = true;
+   flag = false;
+   background_flag = false;
+
+   clearInterval(infect);
+   heal = setInterval(() => {
+      if (health !== 100) health++;
+      else clearInterval(heal);
+   }, 1.5 * 1000);
+
+   rad_heal = setInterval(() => {
+      if (infections.rad !== rad_min) infections.rad--;
+      else clearInterval(rad_heal);
+      document.getElementById("rad").innerHTML = `${infections.rad}`;
+   }, 1 * 1000);
+
+   bio_heal = setInterval(() => {
+      if (infections.bio !== 0) infections.bio--;
+      else clearInterval(bio_heal);
+      document.getElementById("bio").innerHTML = `${infections.bio}`;
+   }, 2.5 * 1000);
+
+   let psy_flag = false;
+
+   if (!psy_flag) {
+      psy_flag = true;
+      setTimeout(() => {
+         infections.psy = psy_min + 5;
+         infections.rad !== 0 ? infections.rad /= 2 : infections.rad = 0;
+         infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0; 
+         health = 45 - psy_min + 5;
+         psy_flag = false;
+      }, 10 * 60 * 1000);
+   }
+
+   temp_heal = setInterval(() => {
+      if (infections.temp !== temp_min) infections.temp--;
+      else clearInterval(temp_heal);
+      document.getElementById("temp").innerHTML = `${infections.temp}`;
+   }, 250);
 }
