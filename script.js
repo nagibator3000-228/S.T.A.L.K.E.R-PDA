@@ -27,8 +27,9 @@ var psy_min = 0;
 var health_flag = false;
 var background_flag = false;
 var flag = false;
-var psy_death = true;
+var psy_death = false;
 var infect_flag = false;
+var death_flag = false;
 var infect_interval = false;
 
 var modal;
@@ -64,7 +65,7 @@ socket.on("connect", () => {
    document.getElementById("connection").innerText = "connected";
    document.getElementById("connection").classList.add("text-success");
    document.getElementById("connection").classList.remove("text-danger");
-   document.getElementById("conn_img").src = "assets/img/connected.png"
+   document.getElementById("conn_img").src = "assets/img/connected.png";
 
    console.log("Conected");
 
@@ -85,7 +86,7 @@ socket.on("disconnect", () => {
    document.getElementById("connection").innerText = "disconnected";
    document.getElementById("connection").classList.add("text-danger");
    document.getElementById("connection").classList.remove("text-success");
-   document.getElementById("conn_img").src = "assets/img/disconnect.jpg"
+   document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
 });
 
 $(document).ready(() => {
@@ -203,7 +204,8 @@ function check_stats() {
    }
 
    if (health < 0) health = 0;
-   if (parseInt(health) === 0 && !psy_death) {
+   if (parseInt(health) === 0 && !psy_death || death_flag) {
+      death_flag = true;
       document.getElementById("modal-title").innerText = `DEATH`;
       document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
       modal.show();
@@ -261,10 +263,10 @@ function checkInfectionStatus() {
                infect = setInterval(() => {
                   infect_interval = true;
                   switch (point.name) {
-                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = parseInt(infections.rad); health -= parseInt(1 * infections.rad * 0.05); break;
-                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(2 * infections.rad * 0.05);  break;
-                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(1 * infections.rad * 0.04);  break;
-                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(4 * infections.rad * 0.6);  break;
+                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = parseInt(infections.rad); health -= parseInt(infections.rad / 10); break;
+                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
+                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
+                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
