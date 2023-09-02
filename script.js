@@ -29,12 +29,12 @@ var background_flag = false;
 var flag = false;
 var psy_death = false;
 var infect_flag = false;
-var death_flag = false;
 var psy_warn_flag = false;
+var sos_flag = false;
 var infect_interval = false;
-
 var health_SOS_flag = false;
 var rad_sound = false;
+var canheal = true;
 
 var modal;
 
@@ -223,11 +223,18 @@ function check_stats() {
    }
 
    if (health < 0) health = 0;
-   if (parseInt(health) === 0 && !psy_death || death_flag) {
-      death_flag = true;
-      document.getElementById("modal-title").innerText = `DEATH`;
-      document.getElementById("modal-body").innerText = `You Died! take your red flag and walk to your base.`;
+   if (parseInt(health) === 0 && !psy_death) {
+      canheal = false;
+      document.getElementById("modal-title").innerText = `TOD!!!!`;
+      document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
       modal.show();
+      if (!sos_flag) {
+         sos_flag = true;
+         document.getElementById("PDA_SOS").play();
+         setTimeout(() => {
+            sos_flag = false;
+         });
+      }
    }
 
    document.getElementById("health").innerHTML = `${parseInt(health)}`;
@@ -321,10 +328,12 @@ function checkHealth() {
 
    clearInterval(infect);
    infect_interval = false;
-   heal = setInterval(() => {
-      if (health !== 100) health += 0.5;
-      else clearInterval(heal);
-   }, 1.5 * 1000);
+   if (canheal) {
+      heal = setInterval(() => {
+         if (health !== 100 && canheal) health += 0.5;
+         else clearInterval(heal);
+      }, 1.5 * 1000);
+   }
 
    rad_heal = setInterval(() => {
       if (infections.rad !== rad_min) {
@@ -357,7 +366,7 @@ function checkHealth() {
          infections.psy = psy_min + 5;
          infections.rad !== 0 ? infections.rad /= 2 : infections.rad = 0;
          infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
-         health = 45 - psy_min + 5;
+         health = 65 - psy_min + 5;
          psy_flag = false;
       }, 10 * 60 * 1000);
    }
