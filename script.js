@@ -30,7 +30,11 @@ var flag = false;
 var psy_death = false;
 var infect_flag = false;
 var death_flag = false;
+var psy_warn_flag = false;
 var infect_interval = false;
+
+var health_SOS_flag = false;
+var rad_sound = false;
 
 var modal;
 
@@ -41,8 +45,10 @@ var coords = {
 
 var distance = 0.0;
 
+// const wibros_times = [  "00:00", "00:30",  "01:00", "01:30",  "02:00", "02:30",  "03:00", "03:30",  "04:00", "04:30",  "05:00", "05:30",  "06:00", "06:30",  "07:00", "07:30",  "08:00", "08:30",  "09:00", "09:30",  "10:00", "10:30",  "11:00", "11:30",  "12:00", "12:30",  "13:00", "13:30",  "14:00", "14:30",  "15:00", "15:30",  "16:00", "16:30",  "17:00", "17:30",  "18:00", "18:30",  "19:00", "19:30",  "20:00", "20:30",  "21:00", "21:30",  "22:00", "22:30",  "23:00", "23:30"];
+
 const infectionPoints = [
-   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5},
+   { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
    { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 11, strength: 24 },
@@ -69,7 +75,13 @@ socket.on("connect", () => {
 
    console.log("Conected");
 
-   socket.on("get-task", (data) => {
+   socket.on("get-task", async (data) => {
+      const rand = await Math.floor(Math.random() * 3) + 1;
+      switch (rand) {
+         case 1: document.getElementById("PDA_1").play(); break;
+         case 2: document.getElementById("PDA_2").play(); break;
+         case 3: document.getElementById("PDA_3").play(); break;
+      }
       let parsed_data = JSON.parse(data);
       console.log(parsed_data);
       document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
@@ -123,6 +135,7 @@ $(document).ready(() => {
       });
    });
    setInterval(check_stats, 1000 / 60);
+   // setInterval(check_time, 1 * 60 * 1000);
 });
 
 function successCallback(position) {
@@ -151,10 +164,16 @@ function check_stats() {
    if (currentHealth < 21) {
       healthElement.classList.remove("text-success", "text-warning");
       healthElement.classList.add("text-danger");
+      if (!health_SOS_flag) {
+         document.getElementById("PDA_SOS").play();
+         health_SOS_flag = true;
+      }
    } else if (currentHealth < 51) {
+      health_SOS_flag = false;
       healthElement.classList.remove("text-success", "text-danger");
       healthElement.classList.add("text-warning");
    } else {
+      health_SOS_flag = false;
       healthElement.classList.remove("text-warning", "text-danger");
       healthElement.classList.add("text-success");
    }
@@ -218,12 +237,21 @@ function check_stats() {
       document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
       document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
       modal.show();
+      if (!psy_warn_flag) {
+         psy_flag = true;
+         psy_warn_flag = true;
+         document.getElementById("psy_warn").play();
+      }
    } else if (infections.psy >= 80) {
       psy_death = false;
+      document.getElementById("psy_warn").pause();
+      psy_warn_flag = false;
       document.getElementById("modal-title").innerText = `DU BIST ZOMBIERT!!!!`;
       document.getElementById("modal-body").innerText = `DU GREIFST ALLE AN UND KANNST NICHT DENKEN!!!`;
       modal.show();
    } else if (infections.psy < 0) {
+      document.getElementById("psy_warn").pause();
+      psy_warn_flag = false;
       console.error("psy infection Error");
    }
 
@@ -263,7 +291,14 @@ function checkInfectionStatus() {
                infect = setInterval(() => {
                   infect_interval = true;
                   switch (point.name) {
-                     case 'rad': infections.rad += point.strength; document.getElementById("rad").innerText = parseInt(infections.rad); health -= parseInt(infections.rad / 10); break;
+                     case 'rad': infections.rad += point.strength;
+                        document.getElementById("rad").innerText = parseInt(infections.rad);
+                        health -= parseInt(infections.rad / 10);
+                        if (!rad_sound) {
+                           rad_sound = true;
+                           document.getElementById("radiation").play();
+                        }
+                        break;
                      case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
                      case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
                      case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
@@ -279,10 +314,10 @@ function checkInfectionStatus() {
 };
 
 function checkHealth() {
-   console.log("check health");
    health_flag = true;
    flag = false;
    background_flag = false;
+   rad_sound = false;
 
    clearInterval(infect);
    infect_interval = false;
@@ -292,8 +327,18 @@ function checkHealth() {
    }, 1.5 * 1000);
 
    rad_heal = setInterval(() => {
-      if (infections.rad !== rad_min) infections.rad -= 0.5;
-      else clearInterval(rad_heal);
+      if (infections.rad !== rad_min) {
+         infections.rad -= 0.5;
+         if (!rad_sound) {
+            rad_sound = true;
+            document.getElementById("radiation").play();
+         }
+      }
+      else {
+         document.getElementById("radiation").pause();
+         rad_sound = false;
+         clearInterval(rad_heal);
+      }
       document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
    }, 1 * 1000);
 
@@ -303,14 +348,15 @@ function checkHealth() {
       document.getElementById("bio").innerHTML = `${parseInt(infections.bio)}`;
    }, 2.5 * 1000);
 
-   let psy_flag = false;
+   let psy_flag = true;
 
    if (!psy_flag) {
       psy_flag = true;
       setTimeout(() => {
+         psy_warn_flag = false;
          infections.psy = psy_min + 5;
          infections.rad !== 0 ? infections.rad /= 2 : infections.rad = 0;
-         infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0; 
+         infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
          health = 45 - psy_min + 5;
          psy_flag = false;
       }, 10 * 60 * 1000);
@@ -322,3 +368,22 @@ function checkHealth() {
       document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
    }, 250);
 }
+
+// function check_time() {
+//    const currentTime = new Date();
+//    const currentTimeString = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
+
+//    if (toString(wibros_times).includes(currentTimeString)) {
+//       document.getElementById("wibros_start").play();
+//       console.log("wibros start");
+//       setTimeout(() => {
+//          console.log("wibros");
+//          document.getElementById("wibros").play();
+//          setTimeout(() => {
+//             console.log("wibros end");
+//             document.getElementById("wibros").pause();
+//             document.getElementById("wibros_end").play();
+//          }, 2.15 * 60 * 1000);
+//       }, 5 * 60 * 1000);
+//    }
+// }

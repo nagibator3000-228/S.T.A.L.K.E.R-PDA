@@ -18,9 +18,36 @@
       integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
       crossorigin="anonymous"></script>
    <script src="./index.min.js"></script>
-   <script src="./script.js"></script>
+   <script src="./script.js" type="module"></script>
 </head>
 <body class="bg-dark">
+   <audio id="psy_warn">
+      <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="radiation" loop>
+      <source src="./assets/sounds/radiation.mp3" type="audio/mpeg">
+   </audio>
+   <!-- <audio id="wibros">
+      <source src="./assets/sounds/wibros.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="wibros_start">
+      <source src="./assets/sounds/wibros_start.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="wibros_end">
+      <source src="./assets/sounds/wibros_end.mp3" type="audio/mpeg">
+   </audio> -->
+   <audio id="PDA_1">
+      <source src="./assets/sounds/PDA_1.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="PDA_2">
+      <source src="./assets/sounds/PDA_2.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="PDA_3">
+      <source src="./assets/sounds/PDA_3.mp3" type="audio/mpeg">
+   </audio>
+   <audio id="PDA_SOS">
+      <source src="./assets/sounds/PDA_SOS.mp3" type="audio/mpeg">
+   </audio>
    <div class="container-fluid custom-container">
       <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4"
          data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Settings</a>
@@ -39,7 +66,9 @@
                   <li><a class="dropdown-item" href="#Dolg">Dolg</a></li>
                   <li><a class="dropdown-item" href="#Svoboda">Svoboda</a></li>
                   <li><a class="dropdown-item" href="#Bandit">Bandit</a></li>
-                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                     <hr class="dropdown-divider">
+                  </li>
                   <li><a class="dropdown-item" href="#">No Group / Reset</a></li>
                </ul>
             </div>
