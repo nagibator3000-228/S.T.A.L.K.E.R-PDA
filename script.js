@@ -181,9 +181,6 @@ function check_stats() {
       healthElement.classList.add("text-danger");
       if (!health_SOS_flag) {
          document.getElementById("PDA_SOS").play();
-         if ("vibrate" in navigator) {
-            navigator.vibrate(200);
-         }
          health_SOS_flag = true;
       }
    } else if (currentHealth < 51) {
