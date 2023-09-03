@@ -67,11 +67,15 @@ const infectionPoints = [
    { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 24, min: 55, background: true }       //! locations
 ];
 
-socket.on("connect", () => {
+socket.on("connect", async () => {
+   await document.getElementById("PDA_contact").play();
    document.getElementById("connection").innerText = "connected";
    document.getElementById("connection").classList.add("text-success");
    document.getElementById("connection").classList.remove("text-danger");
+
+   await setTimeout(() => {
    document.getElementById("conn_img").src = "assets/img/connected.png";
+   }, 200);
 
    console.log("Conected");
 
@@ -90,17 +94,15 @@ socket.on("connect", () => {
    socket.on("clear", () => {
       document.getElementById("task").innerHTML = ``;
    });
-
-   document.getElementById("PDA_contact").play();
 });
 
-socket.on("disconnect", () => {
-   document.getElementById("PDA_contact").play();
+socket.on("disconnect", async () => {
+   await document.getElementById("PDA_contact").play();
 
    document.getElementById("connection").innerText = "disconnected";
    document.getElementById("connection").classList.add("text-danger");
    document.getElementById("connection").classList.remove("text-success");
-   setTimeout(() => {
+   await setTimeout(() => {
       document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
    }, 200);
    console.log("Disconnected from server");
