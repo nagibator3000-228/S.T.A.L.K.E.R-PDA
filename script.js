@@ -72,10 +72,7 @@ socket.on("connect", async () => {
    document.getElementById("connection").innerText = "connected";
    document.getElementById("connection").classList.add("text-success");
    document.getElementById("connection").classList.remove("text-danger");
-
-   await setTimeout(() => {
    document.getElementById("conn_img").src = "assets/img/connected.png";
-   }, 200);
 
    console.log("Conected");
 
@@ -102,9 +99,7 @@ socket.on("disconnect", async () => {
    document.getElementById("connection").innerText = "disconnected";
    document.getElementById("connection").classList.add("text-danger");
    document.getElementById("connection").classList.remove("text-success");
-   await setTimeout(() => {
-      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
-   }, 200);
+   document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
    console.log("Disconnected from server");
 });
 
