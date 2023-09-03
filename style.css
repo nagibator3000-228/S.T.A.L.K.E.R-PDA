@@ -111,14 +111,14 @@ h5 {
 #connection {
   color: white;
   position: absolute;
-  padding-left: 5em;
+  padding-left: 6em;
   margin-top: 1px;
   font-size: x-small;
   text-decoration: overline;
 }
 
 #conn_img {
-  margin-left: 2.05em;
+  margin-left: 2.8em;
   margin-top: 3px;
   position: absolute;
   mix-blend-mode: color-burn;
