@@ -99,7 +99,9 @@ socket.on("disconnect", async () => {
    document.getElementById("connection").innerText = "disconnected";
    document.getElementById("connection").classList.add("text-danger");
    document.getElementById("connection").classList.remove("text-success");
-   document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+   setTimeout(() => {
+      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+   }, 200);
    console.log("Disconnected from server");
 });
 
