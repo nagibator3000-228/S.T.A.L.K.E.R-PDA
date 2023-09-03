@@ -90,15 +90,20 @@ socket.on("connect", () => {
    socket.on("clear", () => {
       document.getElementById("task").innerHTML = ``;
    });
+
+   document.getElementById("PDA_contact").play();
 });
 
 socket.on("disconnect", () => {
-   console.log("Disconnected from server");
+   document.getElementById("PDA_contact").play();
 
    document.getElementById("connection").innerText = "disconnected";
    document.getElementById("connection").classList.add("text-danger");
    document.getElementById("connection").classList.remove("text-success");
-   document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+   setTimeout(() => {
+      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+   }, 200);
+   console.log("Disconnected from server");
 });
 
 $(document).ready(() => {
@@ -161,11 +166,14 @@ function check_stats() {
    var tempElement = document.getElementById("temp");
    var currentTemp = parseInt(tempElement.innerText);
 
-   if (currentHealth < 21) {
+   if (currentHealth < 30) {
       healthElement.classList.remove("text-success", "text-warning");
       healthElement.classList.add("text-danger");
       if (!health_SOS_flag) {
          document.getElementById("PDA_SOS").play();
+         if ("vibrate" in navigator) {
+            navigator.vibrate(200);
+         }
          health_SOS_flag = true;
       }
    } else if (currentHealth < 51) {
