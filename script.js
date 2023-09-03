@@ -53,18 +53,29 @@ const infectionPoints = [
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 11, strength: 24 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 17, min: 60, background: true },       //? zone 2
-   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 13, strength: 25 },
+   { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 13, strength: 16 },
    { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 4, strength: 4 },
    { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 6, strength: 7 },
-   { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 8, strength: 18 },
+   { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 8, strength: 14 },
    { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 6, strength: 3 },
    { name: "rad", latitude: 47.997638, longitude: 8.820741, radius: 9, strength: 7 },
    { name: "rad", latitude: 47.997369, longitude: 8.820891, radius: 9, strength: 8 },
    { name: "rad", latitude: 47.997308, longitude: 8.820505, radius: 17, strength: 6 },
    { name: "rad", latitude: 47.997714, longitude: 8.820011, radius: 5, strength: 4 },
    { name: "bio", latitude: 47.997255, longitude: 8.819794, radius: 7, strength: 6 },
-   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 44, min: 34, background: true },      //! locations
-   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 24, min: 55, background: true }       //! locations
+   { name: "rad", latitude: 47.999153, longitude: 8.821538, radius: 44, min: 34, background: true },       //! locations
+   { name: "rad", latitude: 47.996979, longitude: 8.820725, radius: 24, min: 55, background: true },       //! locations
+   { name: "rad", latitude: 47.999098, longitude: 8.820082, radius: 6, strength: 12 },
+   { name: "bio", latitude: 47.997736, longitude: 8.820387, radius: 10, strength: 2 },
+   { name: "rad", latitude: 47.997178, longitude: 8.819941, radius: 8, strength: 8 },
+   { name: "rad", latitude: 47.998832, longitude: 8.818748, radius: 7, strength: 3 },
+   { name: "rad", latitude: 47.998379, longitude: 8.819073, radius: 5, strength: 3 },
+   { name: "rad", latitude: 47.997866, longitude: 8.819510, radius: 5, strength: 3 },
+   { name: "rad", latitude: 47.997348, longitude: 8.819925, radius: 5, strength: 3 },
+   { name: "rad", latitude: 47.998391, longitude: 8.820137, radius: 6, strength: 6 },
+   { name: "bio", latitude: 47.998526, longitude: 8.820136, radius: 1, strength: 2 },
+   { name: "rad", latitude: 47.998442, longitude: 8.821268, radius: 16, strength: 6 },
+   { name: "bio", latitude: 47.998683, longitude: 8.817779, radius: 6, strength: 6 }
 ];
 
 socket.on("connect", async () => {
