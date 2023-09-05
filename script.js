@@ -51,10 +51,10 @@ const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
    { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 11, strength: 24 },
-   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 17, min: 60, background: true },       //? zone 2
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 24 },
+   { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 20, min: 60, background: true },       //? zone 2
    { name: "rad", latitude: 47.999714, longitude: 8.820312, radius: 13, strength: 16 },
-   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 4, strength: 4 },
+   { name: "psy", latitude: 47.999816, longitude: 8.820140, radius: 7, strength: 4 },
    { name: "bio", latitude: 47.999498, longitude: 8.820577, radius: 6, strength: 7 },
    { name: "rad", latitude: 47.998933, longitude: 8.818682, radius: 8, strength: 14 },
    { name: "bio", latitude: 47.997965, longitude: 8.821235, radius: 6, strength: 3 },
@@ -73,9 +73,19 @@ const infectionPoints = [
    { name: "rad", latitude: 47.997866, longitude: 8.819510, radius: 5, strength: 3 },
    { name: "rad", latitude: 47.997348, longitude: 8.819925, radius: 5, strength: 3 },
    { name: "rad", latitude: 47.998391, longitude: 8.820137, radius: 6, strength: 6 },
-   { name: "bio", latitude: 47.998526, longitude: 8.820136, radius: 1, strength: 2 },
+   { name: "rad", latitude: 47.998526, longitude: 8.820149, radius: 1, strength: 2 },
    { name: "rad", latitude: 47.998442, longitude: 8.821268, radius: 16, strength: 6 },
-   { name: "bio", latitude: 47.998683, longitude: 8.817779, radius: 6, strength: 6 }
+   { name: "bio", latitude: 47.998683, longitude: 8.817779, radius: 6, strength: 6 },
+   { name: "rad", latitude: 47.998323, longitude: 8.819821, radius: 4, strength: 3 },
+   { name: "bio", latitude: 47.998538, longitude: 8.820297, radius: 6, strength: 4 },
+   { name: "rad", latitude: 47.999169, longitude: 8.819542, radius: 11, strength: 6 },
+   { name: "rad", latitude: 47.999709, longitude: 8.819448, radius: 6, strength: 5 },
+   { name: "rad", latitude: 47.999534, longitude: 8.819439, radius: 7, strength: 5 },
+   { name: "rad", latitude: 47.999174, longitude: 8.818953, radius: 6, strength: 2 },
+   { name: "bio", latitude: 47.998126, longitude: 8.821418, radius: 2, strength: 2 },
+   { name: "rad", latitude: 47.998162, longitude: 8.820865, radius: 2, strength: 2 },
+   { name: "rad", latitude: 47.998664, longitude: 8.818218, radius: 3, strength: 3 },
+   { name: "rad", latitude: 47.998927, longitude: 8.819972, radius: 5, strength: 4 }
 ];
 
 socket.on("connect", async () => {
@@ -84,15 +94,15 @@ socket.on("connect", async () => {
    document.getElementById("connection").classList.add("text-success");
    document.getElementById("connection").classList.remove("text-danger");
    document.getElementById("conn_img").src = "assets/img/connected.png";
- 
+
    console.log("Conected");
 
    socket.on("get-task", async (data) => {
       const rand = await Math.floor(Math.random() * 3) + 1;
       switch (rand) {
-         case 1: document.getElementById("PDA_1").play(); break;
+         case 1: document.getElementById("PDA_3").play(); break;
          case 2: document.getElementById("PDA_2").play(); break;
-         case 3: document.getElementById("PDA_3").play(); break;
+         case 3: document.getElementById("PDA_1").play(); break;
       }
       let parsed_data = JSON.parse(data);
       console.log(parsed_data);
@@ -120,6 +130,8 @@ $(document).ready(() => {
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
+
+   // getPermission();
 
    document.getElementById("rad").innerText = rad_min;
    document.getElementById("health").innerText = health;
@@ -176,14 +188,14 @@ function check_stats() {
    var tempElement = document.getElementById("temp");
    var currentTemp = parseInt(tempElement.innerText);
 
-   if (currentHealth < 30) {
+   if (currentHealth < 41) {
       healthElement.classList.remove("text-success", "text-warning");
       healthElement.classList.add("text-danger");
       if (!health_SOS_flag) {
          document.getElementById("PDA_SOS").play();
          health_SOS_flag = true;
       }
-   } else if (currentHealth < 51) {
+   } else if (currentHealth < 66) {
       health_SOS_flag = false;
       healthElement.classList.remove("text-success", "text-danger");
       healthElement.classList.add("text-warning");
@@ -193,7 +205,7 @@ function check_stats() {
       healthElement.classList.add("text-success");
    }
 
-   if (currentRad > 100) {
+   if (currentRad > 99) {
       radElement.classList.remove("text-success", "text-warning");
       radElement.classList.add("text-danger");
    } else if (currentRad > 50) {
@@ -260,7 +272,7 @@ function check_stats() {
       document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
       modal.show();
       if (!psy_warn_flag) {
-         psy_flag = true;
+         psy_flag = false;
          psy_warn_flag = true;
          document.getElementById("psy_warn").play();
       }
@@ -304,6 +316,9 @@ function checkInfectionStatus() {
          } else {
             if (!flag) {
                flag = true;
+               rad_sound = false;
+
+               console.log(point);
 
                clearInterval(heal);
                clearInterval(rad_heal);
@@ -339,7 +354,6 @@ function checkHealth() {
    health_flag = true;
    flag = false;
    background_flag = false;
-   rad_sound = false;
 
    clearInterval(infect);
    infect_interval = false;
@@ -353,14 +367,9 @@ function checkHealth() {
    rad_heal = setInterval(() => {
       if (infections.rad !== rad_min) {
          infections.rad -= 0.5;
-         if (!rad_sound) {
-            rad_sound = true;
-            document.getElementById("radiation").play();
-         }
       }
       else {
          document.getElementById("radiation").pause();
-         rad_sound = false;
          clearInterval(rad_heal);
       }
       document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
@@ -383,7 +392,7 @@ function checkHealth() {
          infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
          health = 65 - psy_min + 5;
          psy_flag = false;
-      }, 10 * 60 * 1000);
+      }, 7 * 60 * 1000);
    }
 
    temp_heal = setInterval(() => {
@@ -410,4 +419,29 @@ function checkHealth() {
 //          }, 2.15 * 60 * 1000);
 //       }, 5 * 60 * 1000);
 //    }
+// }
+
+// function getPermission() {
+//    switch (Notification.permission.toLocaleLowerCase()) {
+//       case 'granted': subscribe(); break;
+//       case 'denied': console.log("shade"); break;
+//       case 'default': Notification.requestPermission((status) => {
+//          if (status === 'granted') subscribe();
+//          if (status === 'default') setTimeout(() => getPermission(), 3000);
+//       });
+//       break;
+//    }
+// }
+
+// function subscribe() {
+//    var msg = firebase.messaging();
+//    msg.requestPermission().then(() => {
+//       msg.getToken().then((token) => {
+//          console.log(token);
+//       }).catch((e) => {
+//          console.log(e);
+//       });
+//    }).catch((e) => {
+//       console.log(e);
+//    });
 // }
