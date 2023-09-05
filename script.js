@@ -1,4 +1,4 @@
-var socket;
+const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
 
 var group = '';
 
@@ -117,8 +117,6 @@ socket.on("disconnect", async () => {
 });
 
 $(document).ready(() => {
-   socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
-
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
