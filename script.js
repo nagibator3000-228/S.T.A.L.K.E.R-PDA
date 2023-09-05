@@ -100,9 +100,9 @@ socket.on("connect", async () => {
    socket.on("get-task", async (data) => {
       const rand = await Math.floor(Math.random() * 3) + 1;
       switch (rand) {
-         case 1: document.getElementById("PDA_1").play(); break;
+         case 1: document.getElementById("PDA_3").play(); break;
          case 2: document.getElementById("PDA_2").play(); break;
-         case 3: document.getElementById("PDA_3").play(); break;
+         case 3: document.getElementById("PDA_1").play(); break;
       }
       let parsed_data = JSON.parse(data);
       console.log(parsed_data);
@@ -316,6 +316,9 @@ function checkInfectionStatus() {
          } else {
             if (!flag) {
                flag = true;
+               rad_sound = false;
+
+               console.log(point);
 
                clearInterval(heal);
                clearInterval(rad_heal);
@@ -351,7 +354,6 @@ function checkHealth() {
    health_flag = true;
    flag = false;
    background_flag = false;
-   rad_sound = false;
 
    clearInterval(infect);
    infect_interval = false;
