@@ -85,7 +85,7 @@ socket.on("connect", async () => {
    document.getElementById("connection").classList.remove("text-danger");
    document.getElementById("conn_img").src = "assets/img/connected.png";
 
-   alert("Conected");
+   console.log("Conected");
 
    socket.on("get-task", async (data) => {
       const rand = await Math.floor(Math.random() * 3) + 1;
@@ -95,7 +95,7 @@ socket.on("connect", async () => {
          case 3: document.getElementById("PDA_3").play(); break;
       }
       let parsed_data = JSON.parse(data);
-      alert(parsed_data);
+      console.log(parsed_data);
       document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
    });
 
@@ -113,7 +113,7 @@ socket.on("disconnect", async () => {
    setTimeout(() => {
       document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
    }, 200);
-   alert("Disconnected from server");
+   console.log("Disconnected from server");
 });
 
 $(document).ready(() => {
@@ -324,7 +324,7 @@ function checkInfectionStatus() {
                      case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
                      case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
                      case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
-                     default: alert(`Erorr: ${new Error("undefined infection")}`);
+                     default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
             }
@@ -399,12 +399,12 @@ function checkHealth() {
 
 //    if (toString(wibros_times).includes(currentTimeString)) {
 //       document.getElementById("wibros_start").play();
-//       alert("wibros start");
+//       console.log("wibros start");
 //       setTimeout(() => {
-//          alert("wibros");
+//          console.log("wibros");
 //          document.getElementById("wibros").play();
 //          setTimeout(() => {
-//             alert("wibros end");
+//             console.log("wibros end");
 //             document.getElementById("wibros").pause();
 //             document.getElementById("wibros_end").play();
 //          }, 2.15 * 60 * 1000);
