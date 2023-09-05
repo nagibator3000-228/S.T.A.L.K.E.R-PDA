@@ -1,4 +1,4 @@
-const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
+var socket;
 
 var group = '';
 
@@ -84,7 +84,7 @@ socket.on("connect", async () => {
    document.getElementById("connection").classList.add("text-success");
    document.getElementById("connection").classList.remove("text-danger");
    document.getElementById("conn_img").src = "assets/img/connected.png";
-
+ 
    console.log("Conected");
 
    socket.on("get-task", async (data) => {
@@ -117,6 +117,8 @@ socket.on("disconnect", async () => {
 });
 
 $(document).ready(() => {
+   socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
+
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
