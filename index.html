@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,8 +21,9 @@
    <script src="./index.min.js"></script>
    <script src="./script.js" type="module"></script>
 </head>
+
 <body class="bg-dark">
-   <audio id="psy_warn">
+   <audio id="psy_warn" volume="0.75">
       <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
    </audio>
    <audio id="radiation" loop volume="0.96">
@@ -45,10 +47,10 @@
    <audio id="PDA_3" volume="0.74">
       <source src="./assets/sounds/PDA_3.mp3" type="audio/mpeg">
    </audio>
-   <audio id="PDA_SOS" volume="0.8">
+   <audio id="PDA_SOS" volume="0.5">
       <source src="./assets/sounds/PDA_SOS.mp3" type="audio/mpeg">
    </audio>
-   <audio id="PDA_contact" volume="0.96">
+   <audio id="PDA_contact">
       <source src="./assets/sounds/PDA_contact.mp3" type="audio/mpeg">
    </audio>
    <div class="container-fluid custom-container">
@@ -85,13 +87,10 @@
          <img src="assets/img/disconnect.jpg" alt="connection" height="12" width="12" id="conn_img">
       </div>
       <div class="stats-container">
-         <strong>
-            <h2 class="mb-2"><u class="text-light">Stats</u></h2>
-         </strong>
          <hr>
          <div class="stats">
             <div class="stat mb-1 mt-1">
-               <h4 class="text-light">Health</h4>
+               <h4 class="text-light"><u>Health</u></h4>
                <span id="health" class="text-success position-absolute">0</span>
             </div>
             <hr>
@@ -132,4 +131,5 @@
       </div>
    </div>
 </body>
+
 </html>
