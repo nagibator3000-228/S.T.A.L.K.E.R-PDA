@@ -4,20 +4,23 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const cors = require("cors");
 const os = require("os");
+const compression = require('compression');
+const morgan = require('morgan');
+const api_controller = require("./controllers/api_controller");
+const APIKey = require("./models/APIKey");
 require("dotenv").config();
 
 "use strict";
 
-const router = express.Router();
-
-const api_controller = require("./controllers/api_controller");
-const APIKey = require("./models/APIKey");
-
-app.use(cors({origin: '*', methods: ["GET"]}));
-app.use(express.static(__dirname));
-
 var sockets = [];
 var count_of_sockets = 0;
+
+app.use('/', morgan(':method | :url | status :status | ping :response-time ms | IP :remote-addr'));
+app.use(cors({origin: '*', methods: ["GET"]}));
+app.use(express.static(__dirname));
+app.use(compression());
+
+const router = express.Router();
 
 router.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
@@ -27,15 +30,15 @@ router.get('/admin/API/', (req, res) => {
    const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   this.authorized = false;
+   let authorized = false;
 
    validApiKeys.forEach(validApiKey => {
       if (Apikey.key === validApiKey) {
-         this.authorized = true;
+         authorized = true;
       }
    });
 
-   if (this.authorized === true) {
+   if (authorized === true) {
       switch (req.query.file) {
          case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
          case 'script.js': res.status(200).sendFile(__dirname + '/selber/script.js'); break;
@@ -58,15 +61,15 @@ router.get('/admin/API/:API_KEY', (req, res) => {
    const Apikey = new APIKey(req.params.API_KEY);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   this.authorized = false;
+   let authorized = false;
 
    validApiKeys.forEach(validApiKey => {
       if (Apikey.key === validApiKey) {
-         this.authorized = true;
+         authorized = true;
       }
    });
 
-   if (this.authorized === true) {
+   if (authorized === true) {
       res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
       res.status(403).sendFile(__dirname + '/forbidden.html');
