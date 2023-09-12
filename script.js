@@ -88,8 +88,8 @@ const infectionPoints = [
    { name: "rad", latitude: 47.998927, longitude: 8.819972, radius: 5, strength: 4 }
 ];
 
-$(document).ready(() => {
-   socket.on("connect", async () => {
+$(document).ready(async () => {
+   await socket.on("connect", async () => {
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
       document.getElementById("connection").classList.add("text-success");
