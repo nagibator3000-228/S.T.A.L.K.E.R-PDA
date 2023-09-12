@@ -88,45 +88,47 @@ const infectionPoints = [
    { name: "rad", latitude: 47.998927, longitude: 8.819972, radius: 5, strength: 4 }
 ];
 
-socket.on("connect", async () => {
-   await document.getElementById("PDA_contact").play();
-   document.getElementById("connection").innerText = "connected";
-   document.getElementById("connection").classList.add("text-success");
-   document.getElementById("connection").classList.remove("text-danger");
-   document.getElementById("conn_img").src = "assets/img/connected.png";
-
-   console.log("Conected");
-
-   socket.on("get-task", async (data) => {
-      const rand = await Math.floor(Math.random() * 3) + 1;
-      switch (rand) {
-         case 1: document.getElementById("PDA_3").play(); break;
-         case 2: document.getElementById("PDA_2").play(); break;
-         case 3: document.getElementById("PDA_1").play(); break;
-      }
-      let parsed_data = JSON.parse(data);
-      console.log(parsed_data);
-      document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
-   });
-
-   socket.on("clear", () => {
-      document.getElementById("task").innerHTML = ``;
-   });
-});
-
-socket.on("disconnect", async () => {
-   await document.getElementById("PDA_contact").play();
-
-   document.getElementById("connection").innerText = "disconnected";
-   document.getElementById("connection").classList.add("text-danger");
-   document.getElementById("connection").classList.remove("text-success");
-   setTimeout(() => {
-      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
-   }, 200);
-   console.log("Disconnected from server");
-});
-
 $(document).ready(() => {
+   setTimeout(() => {
+      socket.on("connect", async () => {
+         await document.getElementById("PDA_contact").play();
+         document.getElementById("connection").innerText = "connected";
+         document.getElementById("connection").classList.add("text-success");
+         document.getElementById("connection").classList.remove("text-danger");
+         document.getElementById("conn_img").src = "assets/img/connected.png";
+
+         console.log("Conected");
+
+         socket.on("get-task", async (data) => {
+            const rand = await Math.floor(Math.random() * 3) + 1;
+            switch (rand) {
+               case 1: document.getElementById("PDA_3").play(); break;
+               case 2: document.getElementById("PDA_2").play(); break;
+               case 3: document.getElementById("PDA_1").play(); break;
+            }
+            let parsed_data = JSON.parse(data);
+            console.log(parsed_data);
+            document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
+         });
+
+         socket.on("clear", () => {
+            document.getElementById("task").innerHTML = ``;
+         });
+      });
+
+      socket.on("disconnect", async () => {
+         await document.getElementById("PDA_contact").play();
+
+         document.getElementById("connection").innerText = "disconnected";
+         document.getElementById("connection").classList.add("text-danger");
+         document.getElementById("connection").classList.remove("text-success");
+         setTimeout(() => {
+            document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+         }, 1000);
+         console.log("Disconnected from server");
+      });
+   }, 1 * 1000);
+
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
@@ -297,6 +299,7 @@ function check_stats() {
 function checkInfectionStatus() {
    if (!infect_flag) {
       health_flag = false;
+      rad_sound = false;
       infect_flag = true;
    }
    if (infect_interval) infect_flag = false;
@@ -317,6 +320,7 @@ function checkInfectionStatus() {
             if (!flag) {
                flag = true;
                rad_sound = false;
+               health_flag = true;
 
                console.log(point);
 
@@ -367,6 +371,7 @@ function checkHealth() {
    rad_heal = setInterval(() => {
       if (infections.rad !== rad_min) {
          infections.rad -= 0.5;
+         rad_sound = false;
       }
       else {
          document.getElementById("radiation").pause();

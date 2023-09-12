@@ -15,8 +15,8 @@ require("dotenv").config();
 var sockets = [];
 var count_of_sockets = 0;
 
-app.use('/', morgan(':method | :url | status :status | ping :response-time ms | IP :remote-addr'));
-app.use(cors({origin: '*', methods: ["GET"]}));
+app.use('/', morgan(':method | :url | status :status | ping :response-time ms'));
+app.use(cors({ origin: '*', methods: ["GET"] }));
 app.use(express.static(__dirname));
 app.use(compression());
 
@@ -26,23 +26,17 @@ router.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
 });
 
-router.get('/admin/API/', (req, res) => {
+router.get('/admin/API/', async (req, res) => {
    const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
 
-   let authorized = false;
+   await api_controller.validateKey(Apikey.key, validApiKeys);
 
-   validApiKeys.forEach(validApiKey => {
-      if (Apikey.key === validApiKey) {
-         authorized = true;
-      }
-   });
-
-   if (authorized === true) {
+   if (api_controller.authorized === true) {
       switch (req.query.file) {
-         case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break; 
+         case 'style.css': res.status(200).sendFile(__dirname + '/selber/style.css'); break;
          case 'script.js': res.status(200).sendFile(__dirname + '/selber/script.js'); break;
-         default: res.status(404);
+         default: res.status(404).end();
       }
    } else {
       res.status(403).sendFile(__dirname + '/forbidden.html');
@@ -57,25 +51,19 @@ router.get('/admin', (req, res) => {
    res.status(403).sendFile(__dirname + '/forbidden.html');
 });
 
-router.get('/admin/API/:API_KEY', (req, res) => {
+router.get('/admin/API/:API_KEY', async (req, res) => {
    const Apikey = new APIKey(req.params.API_KEY);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
-
-   let authorized = false;
-
-   validApiKeys.forEach(validApiKey => {
-      if (Apikey.key === validApiKey) {
-         authorized = true;
-      }
-   });
-
-   if (authorized === true) {
-      res.status(200).sendFile(__dirname + '/selber/index.html');
+ 
+   await api_controller.validateKey(Apikey.key, validApiKeys);
+ 
+   if (api_controller.authorized === true) {
+     res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
-      res.status(403).sendFile(__dirname + '/forbidden.html');
+     res.status(403).sendFile(__dirname + '/forbidden.html');
    }
-});
-
+ });
+ 
 router.use((req, res) => {
    res.status(404).send("Слышь, брат, страница не найдена! Чё ты тут забыл?");
 });
