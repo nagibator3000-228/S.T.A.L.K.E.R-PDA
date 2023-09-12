@@ -89,46 +89,43 @@ const infectionPoints = [
 ];
 
 $(document).ready(() => {
-   setTimeout(() => {
-      socket.on("connect", async () => {
-         await document.getElementById("PDA_contact").play();
-         document.getElementById("connection").innerText = "connected";
-         document.getElementById("connection").classList.add("text-success");
-         document.getElementById("connection").classList.remove("text-danger");
-         document.getElementById("conn_img").src = "assets/img/connected.png";
+   socket.on("connect", async () => {
+      await document.getElementById("PDA_contact").play();
+      document.getElementById("connection").innerText = "connected";
+      document.getElementById("connection").classList.add("text-success");
+      document.getElementById("connection").classList.remove("text-danger");
+      document.getElementById("conn_img").src = "assets/img/connected.png";
 
-         console.log("Conected");
+      console.log("Conected");
 
-         socket.on("get-task", async (data) => {
-            const rand = await Math.floor(Math.random() * 3) + 1;
-            switch (rand) {
-               case 1: document.getElementById("PDA_3").play(); break;
-               case 2: document.getElementById("PDA_2").play(); break;
-               case 3: document.getElementById("PDA_1").play(); break;
-            }
-            let parsed_data = JSON.parse(data);
-            console.log(parsed_data);
-            document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
-         });
-
-         socket.on("clear", () => {
-            document.getElementById("task").innerHTML = ``;
-         });
+      socket.on("get-task", async (data) => {
+         const rand = await Math.floor(Math.random() * 3) + 1;
+         switch (rand) {
+            case 1: document.getElementById("PDA_3").play(); break;
+            case 2: document.getElementById("PDA_2").play(); break;
+            case 3: document.getElementById("PDA_1").play(); break;
+         }
+         let parsed_data = JSON.parse(data);
+         console.log(parsed_data);
+         document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
       });
 
-      socket.on("disconnect", async () => {
-         await document.getElementById("PDA_contact").play();
-
-         document.getElementById("connection").innerText = "disconnected";
-         document.getElementById("connection").classList.add("text-danger");
-         document.getElementById("connection").classList.remove("text-success");
-         setTimeout(() => {
-            document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
-         }, 1000);
-         console.log("Disconnected from server");
+      socket.on("clear", () => {
+         document.getElementById("task").innerHTML = ``;
       });
-   }, 1 * 1000);
+   });
 
+   socket.on("disconnect", async () => {
+      await document.getElementById("PDA_contact").play();
+
+      document.getElementById("connection").innerText = "disconnected";
+      document.getElementById("connection").classList.add("text-danger");
+      document.getElementById("connection").classList.remove("text-success");
+      setTimeout(() => {
+         document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+      }, 1000);
+      console.log("Disconnected from server");
+   });
    modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
    checkInfectionStatus();
