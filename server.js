@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 router.get('/admin/API/', async (req, res) => {
    const Apikey = new APIKey(req.query.key);
    const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
-
+   console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mNew Admin connection IP: ${req.ip}\u001b[0m`);
    await api_controller.validateKey(Apikey.key, validApiKeys);
 
    if (api_controller.authorized === true) {
