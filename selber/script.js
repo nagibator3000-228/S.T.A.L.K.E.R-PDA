@@ -30,4 +30,5 @@ function send() {
    document.getElementById("task").value = '';
    console.log(data);
    socket.emit("admin-send", JSON.stringify(data));
+   document.getElementById("sound").play();
 }
