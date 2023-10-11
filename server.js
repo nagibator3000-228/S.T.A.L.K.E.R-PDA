@@ -60,7 +60,7 @@ router.get('/admin/API/:API_KEY', async (req, res) => {
    await api_controller.validateKey(Apikey.key, validApiKeys);
  
    if (api_controller.authorized === true) {
-      console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mNew Admin connection IP: ${req.ips}\u001b[0m`);
+      console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mNew Admin connection IP: ${req.ip}\u001b[0m`);
      res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
      res.status(403).sendFile(__dirname + '/forbidden.html');
