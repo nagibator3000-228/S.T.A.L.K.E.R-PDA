@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "tsc": "tsc --watch",
+    "dev": "tsc --watch & nodemon server.js"
   },
   "name": "server",
   "version": "1.0.0",

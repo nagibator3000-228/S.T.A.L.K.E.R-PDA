@@ -6,19 +6,19 @@ const cors = require("cors");
 const os = require("os");
 const compression = require('compression');
 const morgan = require('morgan');
-const api_controller = require("./controllers/api_controller");
-const APIKey = require("./models/APIKey");
+const api_controller = require("./controllers/api_controller").default;
+const APIKey = require("./models/APIKey").default;
 require("dotenv").config();
 
 "use strict";
-
-var sockets = [];
-var count_of_sockets = 0;
 
 app.use('/', morgan(':method | :url | status :status | ping :response-time ms'));
 app.use(cors({ origin: '*', methods: ["GET"] }));
 app.use(express.static(__dirname));
 app.use(compression());
+
+var sockets = [];
+var count_of_sockets = 0;
 
 const router = express.Router();
 
