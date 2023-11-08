@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 
 router.get('/admin/API/', async (req, res) => {
    const Apikey = new APIKey(req.query.key);
-   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
+   const validApiKeys = api_controller.getKeys(process.env.VALID_ADMIN_API_KEYS);
    
    await api_controller.validateKey(Apikey.key, validApiKeys);
 
@@ -53,7 +53,7 @@ router.get('/admin', (req, res) => {
 
 router.get('/admin/API/:API_KEY', async (req, res) => {
    const Apikey = new APIKey(req.params.API_KEY);
-   const validApiKeys = api_controller.getKeys(process.env.VALID_API_KEYS);
+   const validApiKeys = api_controller.getKeys(process.env.VALID_ADMIN_API_KEYS);
    var date = new Date();
    var month = date.getMonth() + 1;
  
@@ -82,6 +82,8 @@ io.on("connection", (socket) => {
    const connectionsCount = io.sockets.server.engine.clientsCount;
    count_of_sockets = connectionsCount;
    console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "sockets: ", sockets, "\n" + `[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "players online: ", " ", count_of_sockets, "\n");
+
+   io.emit("online", count_of_sockets-1);
 
    socket.on("join", (team) => {
       if (team !== '' || team !== ' ') {
@@ -112,6 +114,7 @@ io.on("connection", (socket) => {
       const connectionsCount = io.sockets.server.engine.clientsCount;
       count_of_sockets = connectionsCount;
       console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "sockets: ", sockets, "\n" + `[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "players online: ", " ", count_of_sockets, "\n");
+      io.emit("online", count_of_sockets-1);
    });
 });
 

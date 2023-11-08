@@ -1,4 +1,4 @@
-const socket = io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
+const socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
 
 var data = {
    group: "",
@@ -16,6 +16,9 @@ $(document).ready(() => {
             let btn = document.querySelector('.dropdown-toggle');
             btn.innerText = data.group;
          });
+      });
+      socket.on("online", (count)=> {
+         document.getElementById("online_val").innerText = count;
       });
    });
 });

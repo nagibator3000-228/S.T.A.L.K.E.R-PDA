@@ -1,4 +1,4 @@
-const socket = await io("https://pda-0j64.onrender.com", { transports: ["websocket"] });
+const socket = await io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
 
 var group = '';
 
