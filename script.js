@@ -43,7 +43,7 @@ var coords = {
 
 var distance = 0.0;
 
-const infectionPoints = [];
+let infectionPoints = [];
 
 $(document).ready(async () => {
    const socket = await io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
