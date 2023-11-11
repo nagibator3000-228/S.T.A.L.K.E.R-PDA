@@ -46,11 +46,13 @@ var distance = 0.0;
 let infectionPoints = [];
 
 $(document).ready(async () => {
-   const socket = await io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+   const socket = await io("https://pda-0j64.onrender.com/", await { transports: ["websocket"] });
    if (localStorage.getItem("user") === null) {
       window.location.href = '/login';
    } else {
       document.getElementById("username").innerText = localStorage.getItem("user");
+   }
+   await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
       .then((res) => {
          console.log(res);
@@ -58,8 +60,6 @@ $(document).ready(async () => {
       }).catch((e) => {
          console.error(new Error(e));
       });
-   }
-   await socket.on("connect", async () => {
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
       document.getElementById("connection").classList.add("text-success");
