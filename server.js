@@ -28,7 +28,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/getPoints', (req, res) => {
-   res.send(JSON.stringify(infectionPoints));
+   res.setHeader('Content-Type', 'application/json');
+   res.send(infectionPoints);
 });
 
 router.get('/admin/API/', async (req, res) => {
