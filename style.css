@@ -67,6 +67,21 @@ h5 {
   margin-bottom: 0.3em;
 }
 
+.profile {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.profile > .logo {
+  mix-blend-mode: darken;
+}
+.profile #username {
+  margin-top: 7px;
+  margin-left: 3px;
+}
+
 #health, #rad, #temp, #psy, #bio {
   font-weight: bold;
   margin-left: 6.5em;

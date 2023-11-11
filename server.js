@@ -12,8 +12,8 @@ require("dotenv").config();
 
 "use strict";
 
-app.use('/', morgan(':method | :url | status :status | ping :response-time ms'));
 app.use(cors({ origin: '*', methods: ["GET"] }));
+app.use('/', morgan(':method | :url | status :status | ping :response-time ms'));
 app.use(express.static(__dirname));
 app.use(compression());
 
@@ -110,7 +110,6 @@ io.on("connection", (socket) => {
       if (index !== -1) {
          sockets.splice(index, 1);
       }
-
       const connectionsCount = io.sockets.server.engine.clientsCount;
       count_of_sockets = connectionsCount;
       console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "sockets: ", sockets, "\n" + `[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + "players online: ", " ", count_of_sockets, "\n");

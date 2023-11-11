@@ -1,5 +1,3 @@
-const socket = await io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
-
 var group = '';
 
 var infections = {
@@ -89,6 +87,12 @@ const infectionPoints = [
 ];
 
 $(document).ready(async () => {
+   const socket = await io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+   if (localStorage.getItem("user") === null) {
+      window.location.href = '/login';
+   } else {
+      document.getElementById("username").innerText = localStorage.getItem("user");
+   }
    await socket.on("connect", async () => {
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
@@ -125,6 +129,11 @@ $(document).ready(async () => {
          document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
       }, 1000);
       console.log("Disconnected from server");
+   });
+
+   document.getElementById("logout").addEventListener('click', () => {
+      localStorage.removeItem("user");
+      window.location.href = '/login';
    });
 
    modal = new bootstrap.Modal(document.getElementById('info-modal'));

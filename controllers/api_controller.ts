@@ -6,7 +6,7 @@ export default class ApiController{
       return this.keys.split(',');
    }
 
-   private static authorized: boolean = false;
+   public static authorized: boolean = false;
 
    static validateKey(key: string, validApiKeys: string[]): void {
       this.authorized = false;

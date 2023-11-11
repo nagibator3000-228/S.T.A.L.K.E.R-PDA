@@ -18,7 +18,7 @@
       integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
       crossorigin="anonymous"></script>
    <script src="./index.min.js"></script>
-   <script src="./script.js" type="module"></script>
+   <script src="./script.js" type="module" async></script>
 </head>
 <body class="bg-dark">
    <audio id="psy_warn" volume="0.75">
@@ -57,11 +57,15 @@
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
          aria-labelledby="offcanvasExampleLabel">
          <div class="offcanvas-header bg-dark">
-            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Settings</h5>
+            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u>Settings</u></h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
          </div>
          <div class="offcanvas-body bg-dark">
-            <h5>Teams</h5>
+            <div class="profile">
+               <img src="./assets/img/favicon.ico" alt="logo" height="35" width="35" class="logo">
+               <h5 id="username">User</h5>
+            </div>
+            <h5 class="mt-4">Teams</h5>
             <div class="dropdown">
                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Change</button>
                <ul class="dropdown-menu">
@@ -75,6 +79,7 @@
                   <li><a class="dropdown-item" href="#">No Group / Reset</a></li>
                </ul>
             </div>
+            <button id="logout" class="btn btn-outline-danger btn-sm mt-5">Logout</button>
          </div>
       </div>
       <div class="image-container">

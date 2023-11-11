@@ -64,6 +64,21 @@ h5 {
    }
 }
 
+.profile {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: nowrap;
+   border: 1px solid black;
+   border-radius: 5px;
+   &>.logo {
+      mix-blend-mode:darken;
+   }
+   & #username {
+      margin-top: 7px;
+      margin-left: 3px;
+   }
+}
+
 #health {
    font-weight: bold;
    margin-left: 6.5em;
