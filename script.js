@@ -47,19 +47,20 @@ let infectionPoints = [];
 
 $(document).ready(async () => {
    const socket = await io("https://pda-0j64.onrender.com/", await { transports: ["websocket"] });
-   if (localStorage.getItem("user") === null) {
+   if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
-      document.getElementById("username").innerText = localStorage.getItem("user");
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
+      document.getElementById("username").innerText = localStorage.getItem("username");
    }
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
-      .then((res) => {
-         console.log(res);
-         infectionPoints = res.data;
-      }).catch((e) => {
-         console.error(new Error(e));
-      });
+         .then((res) => {
+            console.log(res);
+            infectionPoints = res.data;
+         }).catch((e) => {
+            console.error(new Error(e));
+         });
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
       document.getElementById("connection").classList.add("text-success");
@@ -98,7 +99,7 @@ $(document).ready(async () => {
    });
 
    document.getElementById("logout").addEventListener('click', () => {
-      localStorage.removeItem("user");
+      localStorage.clear();
       window.location.href = '/login';
    });
 
@@ -128,6 +129,7 @@ $(document).ready(async () => {
             group = item.innerText;
             let btn = document.querySelector('.dropdown-toggle');
             btn.innerText = group;
+            localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group }));
             socket.emit("join", group);
          } else {
             setTimeout(() => {

@@ -1,6 +1,6 @@
 $(document).ready(() => {
    'use strict';
-   if (localStorage.getItem("user") !== null) {
+   if (localStorage.getItem("username") !== null) {
       window.location.href = '../index.html'; 
    }
    (() => {
@@ -32,10 +32,10 @@ $(document).ready(() => {
                   showConfirmButton: false
                });
                let username = document.getElementById("username").value;
-               localStorage.setItem("user", username);
+               localStorage.setItem("username", username);
                setTimeout(() => {
                   window.location.href = '../index.html'; 
-               }, 500);
+               }, 700);
             }
             form.classList.add('was-validated');
          }, false);
