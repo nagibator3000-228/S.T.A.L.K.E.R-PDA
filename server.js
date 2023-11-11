@@ -122,18 +122,7 @@ io.on("connection", (socket) => {
    });
 });
 
-// http.listen(process.env.PORT, () => {
-//    console.log("starting...");
-//    try {
-//       let date = new Date();
-//       let month = date.getMonth() + 1;
-//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port 3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
-//    } catch (e) {
-//       console.error(new Error(`ERROR 503 | ${e}`));
-//    }
-// });
-
-http.listen(3000, '192.168.178.50', () => {
+http.listen(process.env.PORT, () => {
    console.log("starting...");
    try {
       let date = new Date();
@@ -143,3 +132,14 @@ http.listen(3000, '192.168.178.50', () => {
       console.error(new Error(`ERROR 503 | ${e}`));
    }
 });
+
+// http.listen(3000, '192.168.178.50', () => {
+//    console.log("starting...");
+//    try {
+//       let date = new Date();
+//       let month = date.getMonth() + 1;
+//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port 3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
+//    } catch (e) {
+//       console.error(new Error(`ERROR 503 | ${e}`));
+//    }
+// });
