@@ -54,7 +54,7 @@ $(document).ready(async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
       .then((res) => {
          console.log(res);
-         infectionPoints = JSON.parse(res);
+         infectionPoints = JSON.parse(res.data);
       }).catch((e) => {
          console.error(new Error(e));
       });
