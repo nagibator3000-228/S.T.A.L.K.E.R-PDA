@@ -99,7 +99,7 @@ async function connectToServer() {
 }
 
 $(document).ready(async () => {
-   setTimeout(connectToServer, 2000);
+   setTimeout(connectToServer, 5000);
    if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
