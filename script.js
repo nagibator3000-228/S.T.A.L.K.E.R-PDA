@@ -34,6 +34,9 @@ var health_SOS_flag = false;
 var rad_sound = false;
 var canheal = true;
 
+var socket;
+var connected = false;
+
 var modal;
 
 var coords = {
@@ -45,14 +48,9 @@ var distance = 0.0;
 
 let infectionPoints = [];
 
-$(document).ready(async () => {
-   const socket = await io("https://pda-0j64.onrender.com/", await { transports: ["websocket"] });
-   if (localStorage.getItem("username") === null) {
-      window.location.href = '/login';
-   } else {
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
-      document.getElementById("username").innerText = localStorage.getItem("username");
-   }
+async function connectToServer() {
+   socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
          .then((res) => {
@@ -97,7 +95,16 @@ $(document).ready(async () => {
       }, 1000);
       console.log("Disconnected from server");
    });
+}
 
+$(document).ready(async () => {
+   setTimeout(connectToServer, 2000);
+   if (localStorage.getItem("username") === null) {
+      window.location.href = '/login';
+   } else {
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
+      document.getElementById("username").innerText = localStorage.getItem("username");
+   }
    document.getElementById("logout").addEventListener('click', () => {
       localStorage.clear();
       window.location.href = '/login';
