@@ -35,6 +35,7 @@ var rad_sound = false;
 var canheal = true;
 
 var socket;
+var was_conn = false;
 
 var modal;
 
@@ -49,6 +50,8 @@ let infectionPoints = [];
 
 async function connectToServer() {
    socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+
+   if (socket.connected) was_conn = true;
 
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
@@ -146,7 +149,7 @@ $(document).ready(async () => {
          }
       });
    });
-   setInterval(check_stats, 1000 / 60);
+   if (was_conn) setInterval(check_stats, 1000 / 60);
    // setInterval(check_time, 1 * 60 * 1000);
 });
 
