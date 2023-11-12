@@ -91,9 +91,7 @@ async function connectToServer() {
       document.getElementById("connection").innerText = "disconnected";
       document.getElementById("connection").classList.add("text-danger");
       document.getElementById("connection").classList.remove("text-success");
-      setTimeout(() => {
-         document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
-      }, 1000);
+      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
       console.log("Disconnected from server");
    });
 }
