@@ -34,7 +34,7 @@ var health_SOS_flag = false;
 var rad_sound = false;
 var canheal = true;
 
-var connected = false;
+var socket;
 
 var modal;
 
@@ -48,7 +48,7 @@ var distance = 0.0;
 let infectionPoints = [];
 
 async function connectToServer() {
-   const socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+   socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
 
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
@@ -91,7 +91,9 @@ async function connectToServer() {
       document.getElementById("connection").innerText = "disconnected";
       document.getElementById("connection").classList.add("text-danger");
       document.getElementById("connection").classList.remove("text-success");
-      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+      setTimeout(() => {
+         document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
+      }, 1000);
       console.log("Disconnected from server");
    });
 }
