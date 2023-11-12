@@ -34,7 +34,6 @@ var health_SOS_flag = false;
 var rad_sound = false;
 var canheal = true;
 
-var socket;
 var connected = false;
 
 var modal;
@@ -49,15 +48,17 @@ var distance = 0.0;
 let infectionPoints = [];
 
 async function connectToServer() {
-   socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
+   const socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
 
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
          .then((res) => {
-            console.log(res);
-            infectionPoints = res.data;
+            if (res.ok || res.status === 304) {
+               infectionPoints = res.data;
+            }
          }).catch((e) => {
             console.error(new Error(e));
+            alert(new Error(e) + 'Cannot load infection points.');
          });
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
