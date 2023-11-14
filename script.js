@@ -69,6 +69,10 @@ async function connectToServer() {
       document.getElementById("connection").classList.remove("text-danger");
       document.getElementById("conn_img").src = "assets/img/connected.png";
 
+      document.getElementById("connect").innerText = 'connected!';
+      document.getElementById("connect").classList.remove("btn-outline-success");
+      document.getElementById("connect").classList.add("btn-success");
+
       console.log("Conected");
 
       socket.on("get-task", async (data) => {
@@ -102,7 +106,6 @@ async function connectToServer() {
 }
 
 $(document).ready(async () => {
-   setTimeout(connectToServer, 5000);
    if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
@@ -112,6 +115,14 @@ $(document).ready(async () => {
    document.getElementById("logout").addEventListener('click', () => {
       localStorage.clear();
       window.location.href = '/login';
+   });
+
+   document.getElementById("connect").addEventListener('click', () => {
+      document.getElementById("connect").innerHTML = `<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                                                      <span role="status">connecting...</span>`;
+      document.getElementById("connect").disabled = true;
+      connectToServer();
+      console.log("connecting..");
    });
 
    modal = new bootstrap.Modal(document.getElementById('info-modal'));

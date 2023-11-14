@@ -82,6 +82,24 @@ h5 {
   margin-left: 3px;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: end;
+  width: 200px;
+  height: 173px;
+}
+.buttons button {
+  margin: 7px;
+  position: relative;
+}
+
+#logout {
+  width: 100px;
+  margin-top: 10px;
+}
+
 #health, #rad, #temp, #psy, #bio {
   font-weight: bold;
   margin-left: 6.5em;

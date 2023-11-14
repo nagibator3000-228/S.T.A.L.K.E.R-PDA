@@ -67,12 +67,12 @@ router.get('/admin/API/:API_KEY', async (req, res) => {
  
    if (api_controller.authorized === true) {
       console.log(`[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mNew Admin connection IP: ${req.ip}\u001b[0m`);
-     res.status(200).sendFile(__dirname + '/selber/index.html');
+      res.status(200).sendFile(__dirname + '/selber/index.html');
    } else {
      res.status(403).sendFile(__dirname + '/forbidden.html');
    }
- });
- 
+});
+
 router.use((req, res) => {
    res.status(404).send("Слышь, брат, страница не найдена! Чё ты тут забыл?");
 });
@@ -128,7 +128,7 @@ http.listen(process.env.PORT, () => {
    try {
       let date = new Date();
       let month = date.getMonth() + 1;
-      console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port 3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
+      console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port ${process.env.PORT}\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
    } catch (e) {
       console.error(new Error(`ERROR 503 | ${e}`));
    }
@@ -139,7 +139,7 @@ http.listen(process.env.PORT, () => {
 //    try {
 //       let date = new Date();
 //       let month = date.getMonth() + 1;
-//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port 3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
+//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on 192.168.178.50:3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
 //    } catch (e) {
 //       console.error(new Error(`ERROR 503 | ${e}`));
 //    }
