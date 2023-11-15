@@ -110,7 +110,9 @@ $(document).ready(async () => {
       window.location.href = '/login';
    } else {
       localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
-      document.getElementById("username").innerText = localStorage.getItem("username");
+      document.querySelectorAll("#username").forEach(username => {
+         username.innerText = localStorage.getItem("username");
+      });
    }
    document.getElementById("logout").addEventListener('click', () => {
       localStorage.clear();

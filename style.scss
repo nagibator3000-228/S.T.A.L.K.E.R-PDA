@@ -83,13 +83,25 @@ h5 {
    display: flex;
    flex-direction: column;
    flex-wrap: nowrap;
-   justify-content: end;
+   justify-content: start;
    width: 200px;
    height: 173px;
    & button {
-      margin: 7px;
       position: relative;
    }
+}
+
+.inv {
+   background-image: url("https://www.schulsachen.de/media/catalog/product/cache/1/image/650x/040ec09b1e35df139433887a97daa66f/o/x/oxford_heft_din_a4_16_blatt_lineatur_7_7_mm_kariert-01.jpg");
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: 30.1em;
+   height: 240px;
+}
+
+.logo {
+   margin-top: 5px;
+   margin-left: 3px;
 }
 
 #logout {
