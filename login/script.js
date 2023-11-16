@@ -32,7 +32,7 @@ $(document).ready(() => {
                   showConfirmButton: false
                });
                let username = document.getElementById("username").value;
-               localStorage.setItem("username", username);
+               localStorage.setItem("username", username.trim());
                setTimeout(() => {
                   window.location.href = '../index.html'; 
                }, 700);

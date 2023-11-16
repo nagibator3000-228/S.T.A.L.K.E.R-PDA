@@ -84,6 +84,7 @@ async function connectToServer() {
          }
          let parsed_data = JSON.parse(data);
          console.log(parsed_data);
+         navigator.vibrate(100);
          document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
       });
 
@@ -255,6 +256,7 @@ function check_stats() {
       canheal = false;
       document.getElementById("modal-title").innerText = `TOD!!!!`;
       document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
+      navigator.vibrate(500); 
       modal.show();
       if (!sos_flag) {
          sos_flag = true;
@@ -271,6 +273,7 @@ function check_stats() {
    if (infections.psy >= 25 && infections.psy < 80) {
       document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
       document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
+      navigator.vibrate(100); 
       modal.show();
       if (!psy_warn_flag) {
          psy_flag = false;
@@ -283,6 +286,7 @@ function check_stats() {
       psy_warn_flag = false;
       document.getElementById("modal-title").innerText = `DU BIST ZOMBIERT!!!!`;
       document.getElementById("modal-body").innerText = `DU GREIFST ALLE AN UND KANNST NICHT DENKEN!!!`;
+      navigator.vibrate(100); 
       modal.show();
    } else if (infections.psy < 0) {
       document.getElementById("psy_warn").pause();
@@ -338,10 +342,11 @@ function checkInfectionStatus() {
                            rad_sound = true;
                            document.getElementById("radiation").play();
                         }
+                        navigator.vibrate(3);
                         break;
-                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
-                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
-                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
+                     case 'bio': infections.bio += point.strength; navigator.vibrate(3); document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
+                     case 'psy': infections.psy += point.strength; navigator.vibrate(3); document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
+                     case 'temp': infections.temp += point.strength; navigator.vibrate(3); document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);

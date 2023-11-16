@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
-
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +21,6 @@
    <script src="./axios.js"></script>
    <script src="./script.js" type="module" async></script>
 </head>
-
 <body class="bg-dark">
    <audio id="psy_warn" volume="0.75">
       <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
@@ -68,7 +66,7 @@
                <img src="./assets/img/stalker_logo.jpg" alt="logo" height="25" width="27" class="logo">
                <h5 id="username">User</h5>
             </div>
-            <div class="accordion accordion-flush mt-3 border border-black" id="accordionFlushExample">
+            <div class="accordion accordion-flush mt-3 m-1 border border-black" id="accordionFlushExample">
                <div class="accordion-item bg-dark">
                   <h2 class="accordion-header">
                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -78,7 +76,9 @@
                   </h2>
                   <div id="flush-collapseOne" class="accordion-collapse collapse bg-dark show"
                      data-bs-parent="#accordionFlushExample">
-                     <div class="accordion-body bg-light border border-black rounded inv"></div>
+                     <div class="accordion-body bg-light">
+                        <div class="border border-black rounded inventory"></div>
+                     </div>
                   </div>
                </div>
                <div class="accordion-item bg-secondary">
@@ -104,7 +104,7 @@
                               <li>
                                  <hr class="dropdown-divider">
                               </li>
-                              <li><a class="dropdown-item" href="#">No Group / Reset</a></li>
+                              <li><a class="dropdown-item" href="#">Reset / disconnect</a></li>
                            </ul>
                         </div>
                         <h5 class="mt-3 mb-0">connection</h5>
@@ -187,5 +187,4 @@
       </div>
    </div>
 </body>
-
 </html>
