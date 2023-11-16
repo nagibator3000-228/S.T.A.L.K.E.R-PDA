@@ -110,6 +110,9 @@ $(document).ready(async () => {
    if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
+      document.getElementById("fullscreen").addEventListener('click', () => {
+         toggleFullScreen(document.getElementById("fullscreen"));
+      });
       localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
@@ -150,7 +153,7 @@ $(document).ready(async () => {
 
    dropdownItems.forEach((item) => {
       item.addEventListener('click', () => {
-         if (item.innerText !== 'No Group / Reset') {
+         if (item.innerText !== 'Reset / disconnect') {
             group = item.innerText;
             let btn = document.querySelector('.dropdown-toggle');
             btn.innerText = group;
@@ -174,6 +177,20 @@ function successCallback(position) {
 
 function errorCallback(error) {
    console.error(`Error: ${new Error(error)}`);
+}
+
+function toggleFullScreen(element) {
+   if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      element.innerText = 'Fullscreen ON';
+      element.classList.remove("btn-outline-danger");
+      element.classList.add("btn-outline-success");
+   } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+      element.innerText = 'Fullscreen OFF';
+      element.classList.remove("btn-outline-success");
+      element.classList.add("btn-outline-danger");
+   }
 }
 
 function check_stats() {
@@ -256,7 +273,7 @@ function check_stats() {
       canheal = false;
       document.getElementById("modal-title").innerText = `TOD!!!!`;
       document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
-      navigator.vibrate(500); 
+      navigator.vibrate(500);
       modal.show();
       if (!sos_flag) {
          sos_flag = true;
@@ -273,7 +290,7 @@ function check_stats() {
    if (infections.psy >= 25 && infections.psy < 80) {
       document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
       document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
-      navigator.vibrate(100); 
+      navigator.vibrate(100);
       modal.show();
       if (!psy_warn_flag) {
          psy_flag = false;
@@ -286,7 +303,7 @@ function check_stats() {
       psy_warn_flag = false;
       document.getElementById("modal-title").innerText = `DU BIST ZOMBIERT!!!!`;
       document.getElementById("modal-body").innerText = `DU GREIFST ALLE AN UND KANNST NICHT DENKEN!!!`;
-      navigator.vibrate(100); 
+      navigator.vibrate(100);
       modal.show();
    } else if (infections.psy < 0) {
       document.getElementById("psy_warn").pause();

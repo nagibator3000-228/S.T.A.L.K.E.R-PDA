@@ -34,8 +34,8 @@ h5 {
 
 .image-container {
    padding: 30px;
-   padding-right: 10px;
    height: auto;
+   width: 35em;
 }
 
 .PDA_image {
@@ -85,7 +85,6 @@ h5 {
    flex-wrap: nowrap;
    justify-content: start;
    width: 200px;
-   height: 173px;
    & button {
       position: relative;
    }
