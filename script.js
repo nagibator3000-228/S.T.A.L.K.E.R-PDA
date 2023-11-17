@@ -397,6 +397,7 @@ function checkHealth() {
       }
       else {
          document.getElementById("radiation").pause();
+         rad_sound = false;
          clearInterval(rad_heal);
       }
       document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
