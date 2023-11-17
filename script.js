@@ -46,7 +46,7 @@ var coords = {
 
 var distance = 0.0;
 
-let infectionPoints = [];
+let infectionPoints = new Array();
 
 async function connectToServer() {
    socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
@@ -56,9 +56,8 @@ async function connectToServer() {
    await socket.on("connect", async () => {
       axios.get('https://pda-0j64.onrender.com/getPoints')
          .then((res) => {
-            if (res.ok || res.status === 304) {
-               infectionPoints = res.data;
-            }
+            infectionPoints = Array.from(res.data);
+            console.log(infectionPoints);
          }).catch((e) => {
             console.error(new Error(e));
             alert(new Error(e) + 'Cannot load infection points.');
@@ -117,57 +116,59 @@ $(document).ready(async () => {
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
-   }
-   document.getElementById("logout").addEventListener('click', () => {
-      localStorage.clear();
-      window.location.href = '/login';
-   });
 
-   document.getElementById("connect").addEventListener('click', () => {
-      document.getElementById("connect").innerHTML = `<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-                                                      <span role="status">connecting...</span>`;
-      document.getElementById("connect").disabled = true;
-      connectToServer();
-      console.log("connecting..");
-   });
-
-   modal = new bootstrap.Modal(document.getElementById('info-modal'));
-
-   checkInfectionStatus();
-
-   // getPermission();
-
-   document.getElementById("rad").innerText = rad_min;
-   document.getElementById("health").innerText = health;
-
-   if (navigator.geolocation) {
-      const options = {
-         maximumAge: 1,
-         timeout: 100,
-         enableHighAccuracy: true
-      };
-      navigator.geolocation.watchPosition(successCallback, errorCallback, options);
-   }
-
-   const dropdownItems = document.querySelectorAll('.dropdown-item');
-
-   dropdownItems.forEach((item) => {
-      item.addEventListener('click', () => {
-         if (item.innerText !== 'Reset / disconnect') {
-            group = item.innerText;
-            let btn = document.querySelector('.dropdown-toggle');
-            btn.innerText = group;
-            localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group }));
-            socket.emit("join", group);
-         } else {
-            setTimeout(() => {
-               location.reload();
-            }, 1000);
-         }
+      document.getElementById("logout").addEventListener('click', () => {
+         localStorage.clear();
+         window.location.href = '/login';
       });
-   });
-   if (was_conn) setInterval(check_stats, 1000 / 60);
-   // setInterval(check_time, 1 * 60 * 1000);
+
+      document.getElementById("connect").addEventListener('click', () => {
+         document.getElementById("connect").innerHTML = `<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                                                      <span role="status">connecting...</span>`;
+         document.getElementById("connect").disabled = true;
+         connectToServer();
+         console.log("connecting..");
+      });
+
+      modal = new bootstrap.Modal(document.getElementById('info-modal'));
+
+      checkInfectionStatus();
+
+      // getPermission();
+
+      document.getElementById("rad").innerText = rad_min;
+      document.getElementById("health").innerText = health;
+
+      if (navigator.geolocation) {
+         const options = {
+            maximumAge: 1,
+            timeout: 100,
+            enableHighAccuracy: true
+         };
+         navigator.geolocation.watchPosition(successCallback, errorCallback, options);
+      }
+
+      const dropdownItems = document.querySelectorAll('.teams');
+
+      Array.from(dropdownItems).forEach((item) => {
+         item.addEventListener('click', () => {
+            if (item.innerText !== 'Reset / disconnect') {
+               let group = item.innerText;
+               let btn = document.querySelector('.team_btn');
+               btn.innerText = group;
+               localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group }));
+               socket.emit("join", group);
+               console.log(item);
+            } else {
+               setTimeout(() => {
+                  location.reload();
+               }, 1000);
+            }
+         });
+      });
+      if (was_conn) setInterval(check_stats, 1000 / 60);
+      // setInterval(check_time, 1 * 60 * 1000);
+   }
 });
 
 function successCallback(position) {
@@ -359,11 +360,11 @@ function checkInfectionStatus() {
                            rad_sound = true;
                            document.getElementById("radiation").play();
                         }
-                        navigator.vibrate(3);
+                        navigator.vibrate(1);
                         break;
-                     case 'bio': infections.bio += point.strength; navigator.vibrate(3); document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
-                     case 'psy': infections.psy += point.strength; navigator.vibrate(3); document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
-                     case 'temp': infections.temp += point.strength; navigator.vibrate(3); document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
+                     case 'bio': infections.bio += point.strength; navigator.vibrate(1); document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
+                     case 'psy': infections.psy += point.strength; navigator.vibrate(1); document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
+                     case 'temp': infections.temp += point.strength; navigator.vibrate(1); document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
