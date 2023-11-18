@@ -2,10 +2,11 @@
   "scripts": {
     "start": "nodemon server.js",
     "tsc": "tsc --watch",
-    "dev": "tsc --watch & nodemon server.js"
+    "production": "pm2 start server & pm2 monit",
+    "build": ""
   },
   "name": "server",
-  "version": "1.0.0",
+  "version": "5.0.0",
   "description": "server",
   "main": "server.js",
   "keywords": [

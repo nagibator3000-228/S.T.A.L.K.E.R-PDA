@@ -51,9 +51,24 @@ let infectionPoints = new Array();
 async function connectToServer() {
    socket = io("https://pda-0j64.onrender.com/", { transports: ["websocket"] });
 
-   if (socket.connected) was_conn = true;
+   setTimeout(() => {
+      if (!was_conn) {
+         document.getElementById("connect").innerHTML = `<div class="d-flex mb-0 pb-0">
+                                                            <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="12" cy="17" r="1" fill="#000000"/>
+                                                            <path d="M12 10L12 14" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M3.44722 18.1056L10.2111 4.57771C10.9482 3.10361 13.0518 3.10362 13.7889 4.57771L20.5528 18.1056C21.2177 19.4354 20.2507 21 18.7639 21H5.23607C3.7493 21 2.78231 19.4354 3.44722 18.1056Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg><p class="ms-2 mb-0">Failed! / retry</p></div>`;
+         document.getElementById("connect").classList.remove("btn-outline-success");
+         document.getElementById("connect").classList.add("btn-danger");
+         document.getElementById("connect").disabled = false;
+         socket.disconnect();
+      }
+   }, 3000);
 
    await socket.on("connect", async () => {
+      was_conn = true;
+
       axios.get('https://pda-0j64.onrender.com/getPoints')
          .then((res) => {
             infectionPoints = Array.from(res.data);
@@ -68,7 +83,7 @@ async function connectToServer() {
       document.getElementById("connection").classList.remove("text-danger");
       document.getElementById("conn_img").src = "assets/img/connected.png";
 
-      document.getElementById("connect").innerText = 'connected!';
+      document.getElementById("connect").innerText = 'connected';
       document.getElementById("connect").classList.remove("btn-outline-success");
       document.getElementById("connect").classList.add("btn-success");
 
@@ -92,15 +107,18 @@ async function connectToServer() {
       });
    });
 
+   document.getElementById("change").disabled = false;
+
    socket.on("disconnect", async () => {
       await document.getElementById("PDA_contact").play();
 
       document.getElementById("connection").innerText = "disconnected";
       document.getElementById("connection").classList.add("text-danger");
       document.getElementById("connection").classList.remove("text-success");
-      setTimeout(() => {
-         document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
-      }, 1000);
+
+      document.getElementById("change").disabled = true;
+
+      document.getElementById("conn_img").src = "assets/img/disconnect.jpg";
       console.log("Disconnected from server");
    });
 }
@@ -123,6 +141,8 @@ $(document).ready(async () => {
       });
 
       document.getElementById("connect").addEventListener('click', () => {
+         document.getElementById("connect").classList.add("btn-outline-success");
+         document.getElementById("connect").classList.remove("btn-danger");
          document.getElementById("connect").innerHTML = `<span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
                                                       <span role="status">connecting...</span>`;
          document.getElementById("connect").disabled = true;

@@ -15,8 +15,8 @@ require("dotenv").config();
 
 app.use(cors({ origin: '*', methods: ["GET"] }));
 app.use('/', morgan(':method | :url | status :status | ping :response-time ms'));
-app.use(express.static(__dirname));
 app.use(compression());
+app.use(express.static(__dirname));
 
 var sockets = [];
 var count_of_sockets = 0;
