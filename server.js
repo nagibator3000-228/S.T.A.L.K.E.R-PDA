@@ -8,7 +8,6 @@ const compression = require('compression');
 const morgan = require('morgan');
 const api_controller = require("./controllers/api_controller").default;
 const APIKey = require("./models/APIKey").default;
-const infectionPoints = require("./infectionPoints");
 require("dotenv").config();
 
 "use strict";
@@ -25,11 +24,6 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
    res.sendFile(__dirname + '/index.html');
-});
-
-router.get('/getPoints', (req, res) => {
-   res.setHeader('Content-Type', 'application/json');
-   res.send(infectionPoints);
 });
 
 router.get('/admin/API/', async (req, res) => {
@@ -74,7 +68,7 @@ router.get('/admin/API/:API_KEY', async (req, res) => {
 });
 
 router.use((req, res) => {
-   res.status(404).send("Слышь, брат, страница не найдена! Чё ты тут забыл?");
+   res.status(404).send("404 | Слышь, брат, страница не найдена! Чё ты тут забыл?");
 });
 
 app.use("/", router);
@@ -123,24 +117,24 @@ io.on("connection", (socket) => {
    });
 });
 
-http.listen(process.env.PORT, () => {
-   console.log("starting...");
-   try {
-      let date = new Date();
-      let month = date.getMonth() + 1;
-      console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port ${process.env.PORT}\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
-   } catch (e) {
-      console.error(new Error(`ERROR 503 | ${e}`));
-   }
-});
-
-// http.listen(3000, '192.168.178.50', () => {
+// http.listen(process.env.PORT, () => {
 //    console.log("starting...");
 //    try {
 //       let date = new Date();
 //       let month = date.getMonth() + 1;
-//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on 192.168.178.50:3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
+//       console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on port ${process.env.PORT}\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
 //    } catch (e) {
 //       console.error(new Error(`ERROR 503 | ${e}`));
 //    }
 // });
+
+http.listen(3000, '192.168.178.50', () => {
+   console.log("starting...");
+   try {
+      let date = new Date();
+      let month = date.getMonth() + 1;
+      console.log(`\n[${date.getDate().toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${date.getFullYear()} | ${date.getHours().toString().padStart(2, '0')} : ${date.getMinutes().toString().padStart(2, '0')} : ${date.getSeconds().toString().padStart(2, '0')}]` + " " + `\u001b[32mServer started on 192.168.178.50:3000\u001b[0m | system ${os.arch} | cpu ${os.availableParallelism}\n`);
+   } catch (e) {
+      console.error(new Error(`ERROR 503 | ${e}`));
+   }
+});
