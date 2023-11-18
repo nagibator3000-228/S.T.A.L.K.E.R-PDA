@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,10 +18,20 @@
    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
       integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
       crossorigin="anonymous"></script>
+   <!-- Google tag (gtag.js) -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B9RFGW4FRL"></script>
+   <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'G-B9RFGW4FRL');
+   </script>
    <script src="./index.min.js" async defer></script>
    <script src="./axios.js" async defer></script>
    <script src="./script.js" type="module" async></script>
 </head>
+
 <body class="bg-dark">
    <audio id="psy_warn" volume="0.75">
       <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
@@ -54,11 +65,13 @@
    </audio>
    <div class="container-fluid custom-container">
       <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4"
-         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample" id="options_lang">options</a>
+         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+         id="options_lang">options</a>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
          aria-labelledby="offcanvasExampleLabel">
          <div class="offcanvas-header bg-dark">
-            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u id="options_lang">options</u><span></span></h5>
+            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u
+                  id="options_lang">options</u><span></span></h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
          </div>
          <div class="offcanvas-body bg-dark">
@@ -70,7 +83,8 @@
                <div class="accordion-item bg-dark">
                   <h2 class="accordion-header">
                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" id="inventory_lang">
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
+                        id="inventory_lang">
                         Inventory
                      </button>
                   </h2>
@@ -84,7 +98,8 @@
                <div class="accordion-item bg-secondary">
                   <h2 class="accordion-header">
                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo" id="settings_lang">
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"
+                        id="settings_lang">
                         Settings
                      </button>
                   </h2>
@@ -117,7 +132,8 @@
                <div class="accordion-item bg-dark">
                   <h2 class="accordion-header">
                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree" id="account_lang">
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"
+                        id="account_lang">
                         Account
                      </button>
                   </h2>
@@ -128,7 +144,8 @@
                            <img src="./assets/img/stalker_logo.jpg" alt="logo" height="25" width="26" class="logo">
                            <h5 id="username">User</h5>
                         </div>
-                        <button id="logout" class="btn btn-outline-danger btn-sm position-relative" id="logout_lang">Logout</button>
+                        <button id="logout" class="btn btn-outline-danger btn-sm position-relative"
+                           id="logout_lang">Logout</button>
                      </div>
                   </div>
                </div>
@@ -187,4 +204,5 @@
       </div>
    </div>
 </body>
+
 </html>
