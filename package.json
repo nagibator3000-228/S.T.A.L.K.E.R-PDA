@@ -6,7 +6,7 @@
     "build": ""
   },
   "name": "server",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "server",
   "main": "server.js",
   "keywords": [
