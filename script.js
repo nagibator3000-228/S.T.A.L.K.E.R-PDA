@@ -48,7 +48,7 @@ var distance = 0.0;
 
 const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
-   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 9999999999, strength: 9 }, //6
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 24 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 20, min: 60, background: true },       //? zone 2
