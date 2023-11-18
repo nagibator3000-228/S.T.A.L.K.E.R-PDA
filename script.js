@@ -325,6 +325,7 @@ function check_stats() {
       canheal = false;
       document.getElementById("modal-title").innerText = `TOD!!!!`;
       document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
+      navigator.vibrate(500);
       modal.show();
       if (!sos_flag) {
          sos_flag = true;
@@ -399,6 +400,7 @@ function checkInfectionStatus() {
                clearInterval(temp_heal);
 
                infect = setInterval(() => {
+                  navigator.vibrate(2);
                   infect_interval = true;
                   switch (point.name) {
                      case 'rad': infections.rad += point.strength;
