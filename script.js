@@ -163,7 +163,7 @@ $(document).ready(async () => {
       document.getElementById("fullscreen").addEventListener('click', () => {
          toggleFullScreen(document.getElementById("fullscreen"));
       });
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: JSON.stringify({helmet:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},mask:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},jacket:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},backpacks_containers:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0,carrying_weight:0},chest_plate:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},gloves:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},boots:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0}})}));
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: {helmet:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},mask:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},jacket:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},backpacks_containers:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0,carrying_weight:0},chest_plate:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},gloves:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},boots:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0}}}));
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
@@ -209,7 +209,8 @@ $(document).ready(async () => {
                let group = item.innerText;
                let btn = document.querySelector('.team_btn');
                btn.innerText = group;
-               localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group }));
+               let arrmour = JSON.parse(localStorage.getItem('user').arrmour);
+               localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group, arrmour }));
                socket.emit("join", group);
                console.log(item);
             } else {
