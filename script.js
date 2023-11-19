@@ -1,3 +1,5 @@
+var tick_rate = 60;
+
 var group = '';
 
 var infections = {
@@ -212,7 +214,7 @@ $(document).ready(async () => {
                let arrmour = JSON.parse(localStorage.getItem('user')).arrmour;
                localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group, arrmour }));
                socket.emit("join", group);
-               console.log(item);
+               // console.log(item);
             } else {
                setTimeout(() => {
                   location.reload();
@@ -220,7 +222,7 @@ $(document).ready(async () => {
             }
          });
       });
-      setInterval(check_stats, 1000 / 60);
+      setInterval(check_stats, 1000 / tick_rate);
       // setInterval(check_time, 1 * 60 * 1000);
    }
 });
@@ -442,13 +444,14 @@ function checkHealth() {
       }, 1.5 * 1000);
    }
 
-   rad_heal = setInterval(() => {
+   rad_heal = setInterval(async() => {
       if (infections.rad !== rad_min) {
          infections.rad -= 0.5;
+         document.getElementById("radiation").pause();
       }
       else {
          document.getElementById("radiation").pause();
-         clearInterval(rad_heal);
+         await clearInterval(rad_heal);
       }
       document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
    }, 1 * 1000);
