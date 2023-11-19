@@ -329,7 +329,6 @@ function check_stats() {
       if (!sos_flag) {
          sos_flag = true;
          document.getElementById("PDA_SOS").play();
-         navigator.vibrate(400);
          setTimeout(() => {
             sos_flag = false;
          });
@@ -399,7 +398,7 @@ function checkInfectionStatus() {
                clearInterval(temp_heal);
 
                infect = setInterval(() => {
-                  navigator.vibrate(100);
+                  navigator.vibrate(200);
                   infect_interval = true;
                   switch (point.name) {
                      case 'rad': infections.rad += point.strength;
