@@ -48,7 +48,7 @@ var distance = 0.0;
 
 const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
-   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 999, strength: 9 },  //6
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 24 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 20, min: 60, background: true },       //? zone 2
@@ -325,11 +325,11 @@ function check_stats() {
       canheal = false;
       document.getElementById("modal-title").innerText = `TOD!!!!`;
       document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
-      navigator.vibrate(500);
       modal.show();
       if (!sos_flag) {
          sos_flag = true;
          document.getElementById("PDA_SOS").play();
+         navigator.vibrate(400);
          setTimeout(() => {
             sos_flag = false;
          });
@@ -355,7 +355,6 @@ function check_stats() {
       psy_warn_flag = false;
       document.getElementById("modal-title").innerText = `DU BIST ZOMBIERT!!!!`;
       document.getElementById("modal-body").innerText = `DU GREIFST ALLE AN UND KANNST NICHT DENKEN!!!`;
-      navigator.vibrate(100);
       modal.show();
    } else if (infections.psy < 0) {
       document.getElementById("psy_warn").pause();
@@ -400,7 +399,7 @@ function checkInfectionStatus() {
                clearInterval(temp_heal);
 
                infect = setInterval(() => {
-                  navigator.vibrate(2);
+                  navigator.vibrate(100);
                   infect_interval = true;
                   switch (point.name) {
                      case 'rad': infections.rad += point.strength;
