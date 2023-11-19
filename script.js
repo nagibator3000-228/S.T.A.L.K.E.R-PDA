@@ -430,6 +430,8 @@ function checkHealth() {
    health_flag = true;
    flag = false;
    background_flag = false;
+   rad_sound = false;
+   console.log(rad_sound, health_flag, flag);
 
    clearInterval(infect);
    infect_interval = false;
@@ -443,11 +445,9 @@ function checkHealth() {
    rad_heal = setInterval(() => {
       if (infections.rad !== rad_min) {
          infections.rad -= 0.5;
-         rad_sound = false;
       }
       else {
          document.getElementById("radiation").pause();
-         rad_sound = false;
          clearInterval(rad_heal);
       }
       document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
