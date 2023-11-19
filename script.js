@@ -209,7 +209,7 @@ $(document).ready(async () => {
                let group = item.innerText;
                let btn = document.querySelector('.team_btn');
                btn.innerText = group;
-               let arrmour = JSON.parse(localStorage.getItem('user').arrmour);
+               let arrmour = JSON.parse(localStorage.getItem('user')).arrmour;
                localStorage.setItem("user", JSON.stringify({ username: localStorage.getItem("username"), group: group, arrmour }));
                socket.emit("join", group);
                console.log(item);
