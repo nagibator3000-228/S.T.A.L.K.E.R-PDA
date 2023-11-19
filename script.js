@@ -51,7 +51,7 @@ var distance = 0.0;
 
 const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
-   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 }, 
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 },
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 24 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 20, min: 60, background: true },       //? zone 2
@@ -165,7 +165,7 @@ $(document).ready(async () => {
       document.getElementById("fullscreen").addEventListener('click', () => {
          toggleFullScreen(document.getElementById("fullscreen"));
       });
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: {helmet:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},mask:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},jacket:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},backpacks_containers:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0,carrying_weight:0},chest_plate:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},gloves:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},boots:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0}}}));
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: { helmet: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, mask: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, jacket: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, backpacks_containers: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0, carrying_weight: 0 }, chest_plate: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, gloves: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, boots: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 } } }));
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
@@ -435,34 +435,47 @@ function checkHealth() {
    rad_sound = false;
    console.log(rad_sound, health_flag, flag);
 
+   var healing_health = false;
+
+   var healing_rad = false;
+   var healing_bio = false
+   var healing_temp = false;
+
    clearInterval(infect);
    infect_interval = false;
-   if (canheal) {
+   if (canheal && !healing_health) {
+      healing_health = true;
       heal = setInterval(() => {
          if (health !== 100 && canheal) health += 0.5;
-         else clearInterval(heal);
+         else clearInterval(heal); healing_health = false;
       }, 1.5 * 1000);
    }
 
-   rad_heal = setInterval(async() => {
-      if (infections.rad !== rad_min) {
-         infections.rad -= 0.5;
+   if (infections.rad !== rad_min && !healing_rad) {
+      healing_rad = true;
+      rad_heal = setInterval(() => {
+         infections.rad -= 5;
+         document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
          document.getElementById("radiation").pause();
-      }
-      else {
+      }, 1 * 1000);
+   } else {
+      if (infections.rad === rad_min) {
          document.getElementById("radiation").pause();
-         await clearInterval(rad_heal);
+         clearInterval(rad_heal);
+         healing_rad = false;
       }
-      document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
-   }, 1 * 1000);
+   }
 
-   bio_heal = setInterval(() => {
-      if (infections.bio !== 0) infections.bio -= 0.5;
-      else clearInterval(bio_heal);
-      document.getElementById("bio").innerHTML = `${parseInt(infections.bio)}`;
-   }, 2.5 * 1000);
+   if (!healing_bio) {
+      healing_bio = true;
+      bio_heal = setInterval(() => {
+         if (infections.bio !== 0) infections.bio -= 0.5;
+         else clearInterval(bio_heal); healing_bio = false;
+         document.getElementById("bio").innerHTML = `${parseInt(infections.bio)}`;
+      }, 2.5 * 1000);
+   }
 
-   let psy_flag = true;
+   let psy_flag = false;
 
    if (!psy_flag) {
       psy_flag = true;
@@ -476,11 +489,14 @@ function checkHealth() {
       }, 7 * 60 * 1000);
    }
 
-   temp_heal = setInterval(() => {
-      if (infections.temp !== temp_min) infections.temp -= 0.5;
-      else clearInterval(temp_heal);
-      document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
-   }, 250);
+   if (!healing_temp) {
+      healing_temp = true;
+      temp_heal = setInterval(() => {
+         if (infections.temp !== temp_min) infections.temp -= 0.5;
+         else clearInterval(temp_heal); healing_temp = false;
+         document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
+      }, 250);
+   }
 }
 
 // function check_time() {
