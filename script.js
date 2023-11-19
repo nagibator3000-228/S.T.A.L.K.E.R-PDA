@@ -33,6 +33,7 @@ var infect_interval = false;
 var health_SOS_flag = false;
 var rad_sound = false;
 var canheal = true;
+var vibrate = true;
 
 var socket;
 var was_conn = false;
@@ -101,6 +102,7 @@ async function connectToServer() {
          document.getElementById("connect").classList.remove("btn-outline-success");
          document.getElementById("connect").classList.add("btn-danger");
          document.getElementById("connect").disabled = false;
+         if (vibrate) navigator.vibrate(1000);
          socket.disconnect();
       }
    }, 5000);
@@ -129,7 +131,7 @@ async function connectToServer() {
          }
          let parsed_data = JSON.parse(data);
          console.log(parsed_data);
-         navigator.vibrate(100);
+         if (vibrate) navigator.vibrate(120);
          document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
       });
 
@@ -161,7 +163,7 @@ $(document).ready(async () => {
       document.getElementById("fullscreen").addEventListener('click', () => {
          toggleFullScreen(document.getElementById("fullscreen"));
       });
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null }));
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: JSON.stringify({helmet:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},mask:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},jacket:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},backpacks_containers:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0,carrying_weight:0},chest_plate:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},gloves:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0},boots:{rad:0,bio:0,psy:0,temp:0,stabble:0,weight:0}})}));
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
@@ -323,6 +325,7 @@ function check_stats() {
    if (health < 0) health = 0;
    if (parseInt(health) === 0 && !psy_death) {
       canheal = false;
+      vibrate = false;
       document.getElementById("modal-title").innerText = `TOD!!!!`;
       document.getElementById("modal-body").innerText = `DU BIST TOD!! nim deine rote flagge und lauf zu base oder warte auf leute die dir helfen.`;
       modal.show();
@@ -341,7 +344,6 @@ function check_stats() {
    if (infections.psy >= 25 && infections.psy < 80) {
       document.getElementById("modal-title").innerText = `Psy infection ist über 25!`;
       document.getElementById("modal-body").innerText = `Dir gehts schlecht, du kannst nicht rennen!!!`;
-      navigator.vibrate(100);
       modal.show();
       if (!psy_warn_flag) {
          psy_flag = false;
@@ -398,7 +400,7 @@ function checkInfectionStatus() {
                clearInterval(temp_heal);
 
                infect = setInterval(() => {
-                  navigator.vibrate(200);
+                  if (vibrate) navigator.vibrate(200);
                   infect_interval = true;
                   switch (point.name) {
                      case 'rad': infections.rad += point.strength;
