@@ -158,7 +158,14 @@ async function connectToServer() {
    });
 }
 
-$(document).ready(async () => {
+window.addEventListener('load', (event) => {
+   navigator.wakeLock.request('screen')
+   .then((wakeLockObj) => {
+      console.log('Экран заблокирован и будет включен всегда');
+  })
+  .catch((error) => {
+      console.error('Ошибка при запросе блокировки экрана:', error);
+  });
    if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
@@ -402,6 +409,8 @@ function checkInfectionStatus() {
                clearInterval(bio_heal);
                clearInterval(temp_heal);
 
+               // - arrmour
+
                infect = setInterval(() => {
                   if (vibrate) navigator.vibrate(200);
                   infect_interval = true;
@@ -482,7 +491,7 @@ function checkHealth() {
       setTimeout(() => {
          psy_warn_flag = false;
          infections.psy = psy_min + 5;
-         infections.rad !== 0 ? infections.rad /= 2 : infections.rad = 0;
+         infections.rad !== rad_min ? infections.rad /= 2 : infections.rad = rad_min;
          infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
          health = 65 - psy_min + 5;
          psy_flag = false;
