@@ -28,6 +28,7 @@
    <script src="script.js" type="module"></script>
 </head>
 <body class="bg-dark">
+   <div id="noise"></div>
    <audio id="psy_warn" volume="0.75">
       <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
    </audio>
@@ -64,9 +65,12 @@
          id="options_lang">options</a>
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
          aria-labelledby="offcanvasExampleLabel">
-         <div class="offcanvas-header bg-dark">
-            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u
-                  id="options_lang">options</u><span></span></h5>
+         <div class="offcanvas-header bg-dark d-flex">
+            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u id="options_lang">options</u></h5>
+            <div class="opt d-flex">
+               <span class="options-param" id="accuracy"></span>
+               <span class="options-param" id="clock"></span>
+            </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
          </div>
          <div class="offcanvas-body bg-dark">
@@ -176,7 +180,7 @@
             </div>
             <div class="stat">
                <h5>Темп.</h5>
-               <span id="temp" class="text-success position-absolute">23</span>
+               <span id="temp" class="text-success position-absolute">0</span>
             </div>
          </div>
          <hr>

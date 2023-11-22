@@ -104,6 +104,48 @@ h5 {
    margin-left: 3px;
 }
 
+.opt {
+   border: 1px solid black;
+   border-radius: 5px;
+   height: 33px;
+   margin-left: 23%;
+   align-items: center;
+   // background-color:rgba(235, 235, 235, 0.841);
+}
+
+.options-param {
+   border: 1px solid black;
+   color: black;
+   border-radius: 5px;
+   height: 24px;
+   margin: 0 5px 0 5px;
+   &:first-child {
+      margin-right: 10px;
+      margin-left: 5px;
+   }
+   &:last-child {
+      margin-left: 10px;
+      margin-right: 5px;
+   }
+}
+
+#noise {
+   opacity: 0.5;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: url('./assets/img/noise.jpg') fixed;
+   background-size: cover;
+   background-position: center;
+}
+
+#accuracy {
+   border: 1px solid rgb(216,53,68);
+   color: rgb(216,53,68);
+}
+
 #logout {
    width: 100px;
    margin-top: 10px;
