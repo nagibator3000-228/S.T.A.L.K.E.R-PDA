@@ -120,7 +120,7 @@ h5 {
   color: black;
   border-radius: 5px;
   height: 24px;
-  margin: 0 5px 0 5px;
+  padding: 0 5px 0 5px;
 }
 .options-param:first-child {
   margin-right: 10px;
@@ -132,6 +132,7 @@ h5 {
 }
 
 #noise {
+  display: none;
   opacity: 0.5;
   position: absolute;
   top: 0;

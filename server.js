@@ -8,6 +8,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const api_controller = require("./controllers/api_controller").default;
 const APIKey = require("./models/APIKey").default;
+const axios = require("axios");
 require("dotenv").config();
 
 "use strict";

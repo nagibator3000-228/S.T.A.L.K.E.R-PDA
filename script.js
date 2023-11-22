@@ -6,7 +6,7 @@ var infections = {
    rad: 20,
    bio: 0,
    psy: 0,
-   temp: 23
+   temp: 0
 }
 
 var health = 100;
@@ -22,7 +22,7 @@ var infect;
 var background_infect;
 
 var rad_min = 20;
-var temp_min = 23;
+var temp_min = 0;
 var psy_min = 0;
 
 var health_flag = false;
@@ -46,14 +46,14 @@ var modal;
 var coords = {
    lat: 0.0,
    long: 0.0,
-   accuracy: 0.0
+   accuracy: 0
 }
 
 var distance = 0.0;
 
 const infectionPoints = [
    { name: "bio", latitude: 47.998689, longitude: 8.820344, radius: 5, strength: 5 },
-   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 }, 
+   { name: "rad", latitude: 47.999052, longitude: 8.820551, radius: 6, strength: 9 }, //6
    { name: "rad", latitude: 47.999027, longitude: 8.819620, radius: 8, strength: 16 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 15, strength: 24 },
    { name: "rad", latitude: 47.999779, longitude: 8.819765, radius: 20, min: 60, background: true },       //? zone 2
@@ -113,6 +113,7 @@ async function connectToServer() {
 
    await socket.on("connect", async () => {
       was_conn = true;
+      document.getElementById("change").disabled = false;
 
       await document.getElementById("PDA_contact").play();
       document.getElementById("connection").innerText = "connected";
@@ -143,8 +144,6 @@ async function connectToServer() {
          document.getElementById("task").innerHTML = ``;
       });
    });
-
-   document.getElementById("change").disabled = false;
 
    socket.on("disconnect", async () => {
       await document.getElementById("PDA_contact").play();
@@ -194,15 +193,16 @@ window.addEventListener('load', (event) => {
          console.log("connecting..");
       });
 
-      // let flag = true;
-      // let rot;
-
-      // setInterval(() => {
-      //    rot = flag === true ? 0 : 180;
-      //    document.getElementById("noise").style = `transform: rotate(${rot}deg)`
-      //    console.log(`noise ${rot} ${flag}`);
-      //    flag = !flag;
-      // }, 50);
+      axios.get("https://api.tomorrow.io/v4/weather/forecast?location=47.998610,8.820886&apikey=KdCGsmClBZNE67vhOD6jdkQ3D14QBRsk")
+      .then((res) => {
+         const temperature = Math.round(parseFloat(res.data.timelines.minutely[0].values.temperature));
+         temp_min = temperature;
+         document.getElementById("temp").innerText = temperature;
+      })
+      .catch((e) => {
+         console.error('Ошибка запроса', e);
+         document.getElementById("temp").innerText = 23;
+      });
 
       updateClock();
 
@@ -210,13 +210,12 @@ window.addEventListener('load', (event) => {
 
       modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
-      document.getElementById("noise").style = `display: none;`;
+      document.getElementById("noise").style = `display: none !important;`;
 
       // getPermission();
 
       document.getElementById("rad").innerText = rad_min;
       document.getElementById("health").innerText = health;
-      document.getElementById("temp").innerText = temp_min;
 
       if (navigator.geolocation) {
          const options = {
@@ -254,21 +253,21 @@ window.addEventListener('load', (event) => {
 function successCallback(position) {
    coords.lat = position.coords.latitude;
    coords.long = position.coords.longitude;
-   coords.accuracy = position.coords.accuracy;
+   coords.accuracy = Math.round(position.coords.accuracy);
 
-   let accuracy = document.getElementById("accuracy");
+   let accuracy_elem = document.getElementById("accuracy");
 
-   accuracy.innerText = coords.accuracy.toString();
+   accuracy_elem.innerText = coords.accuracy;
 
    if (coords.accuracy < 10) {
-      accuracy.style = `border: 1px solid rgb(28,98,68)
-                        color: rgb(28,98,68)`;
+      accuracy_elem.style = `border: 1px solid rgb(28,98,68);
+                           color: rgb(28,98,68)`;
    } else if (coords.accuracy < 50) {
-      accuracy.style = `border: 1px solid rgb(172,134,20)
-                        color: rgb(172,134,20)`;
+      accuracy_elem.style = `border: 1px solid rgb(172,134,20);
+                           color: rgb(172,134,20)`;
    } else {
-      accuracy.style = `border: 1px solid rgb(216,53,68);
-                        color: rgb(216,53,68);`;
+      accuracy_elem.style = `border: 1px solid rgb(216,53,68);
+                           color: rgb(216,53,68);`;
    }
 }
 
@@ -468,7 +467,7 @@ function checkInfectionStatus() {
 
                            rotate = setInterval(() => {
                               rot = rot_flag === true ? 0 : 180;
-                              document.getElementById("noise").style = `transform: rotate(${rot}deg);`
+                              document.getElementById("noise").style = `transform: rotate(${rot}deg); display: block !important;`
                               // console.log(`noise ${rot} ${rot_flag}`);
                               rot_flag = !rot_flag;
                            }, 65);
@@ -513,14 +512,16 @@ function checkHealth() {
    if (!healing_rad) {
       healing_rad = true;
       rad_heal = setInterval(() => {
-         if (infections.rad !== rad_min) infections.rad -= 0.5;
+         if (infections.rad !== rad_min) {
+            infections.rad -= 0.5;
+            rad_sound = false;
+            document.getElementById("noise").style = `display: none !important;`;
+            document.getElementById("radiation").pause();
+         }
          else {
             clearInterval(rad_heal);
             clearInterval(rotate);
             healing_rad = false;
-            rad_sound = false;
-            document.getElementById("noise").style = `display: none;`;
-            document.getElementById("radiation").pause();
             console.log(infections.rad, rad_min, healing_rad);
             clearInterval(rad_heal);
          }
