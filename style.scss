@@ -24,6 +24,18 @@ h5 {
    color: white;
 }
 
+@keyframes pulse {
+   0% {
+      opacity: 0.2;
+   }
+   20% {
+      opacity: 0.36;
+   }
+   100% {
+      opacity: 0.2;
+   }
+}
+
 .custom-container {
    display: flex;
    align-items: flex-start;
@@ -118,7 +130,7 @@ h5 {
    color: black;
    border-radius: 5px;
    height: 24px;
-   padding: 0 5px 0 5px;
+   padding: 0 5px 2px 5px;
    &:first-child {
       margin-right: 10px;
       margin-left: 5px;
@@ -139,6 +151,46 @@ h5 {
    height: 100%;
    background: url('./assets/img/noise.jpg') fixed;
    background-size: cover;
+   background-position: center;
+}
+
+#bio_filter {
+   display: none;
+   opacity: 0.36;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-color: rgb(0, 185, 0);
+   background-size: cover;
+   background-position: center;
+   animation: pulse 1.2s ease-out infinite;
+}
+
+#temp_filter {
+   display: none;
+   opacity: 0.5;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: radial-gradient(circle, rgb(255, 166, 0) 0%, rgb(78, 0, 0) 110%);
+   background-size: cover;
+   background-position: center;
+}
+
+#psy_filter {
+   display: none;
+   opacity: 0.5;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-size: cover;
+   background: radial-gradient(circle, rgb(72, 0, 255) 0%, rgb(255, 230, 0) 110%);
    background-position: center;
 }
 

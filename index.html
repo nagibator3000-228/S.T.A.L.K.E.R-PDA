@@ -29,6 +29,9 @@
 </head>
 <body class="bg-dark">
    <div id="noise"></div>
+   <div id="bio_filter"></div>
+   <div id="temp_filter"></div>
+   <div id="psy_filter"></div>
    <audio id="psy_warn" volume="0.75">
       <source src="./assets/sounds/PSY_WARNING.mp3" type="audio/mpeg">
    </audio>
@@ -61,14 +64,14 @@
    </audio>
    <div class="container-fluid custom-container">
       <a class="position-absolute link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover ms-4"
-         data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+         data-bs-toggle="offcanvas" href="#offcanvas" role="button" aria-controls="offcanvas"
          id="options_lang">options</a>
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-         aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas"
+         aria-labelledby="offcanvasLabel">
          <div class="offcanvas-header bg-dark d-flex">
-            <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel"><u id="options_lang">options</u></h5>
+            <h5 class="offcanvas-title text-light" id="offcanvasLabel"><u id="options_lang">options</u></h5>
             <div class="opt d-flex">
-               <span class="options-param" id="accuracy"></span>
+               <span class="options-param" id="accuracy" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="accuracy"></span>
                <span class="options-param" id="clock"></span>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -78,7 +81,7 @@
                <img src="./assets/img/stalker_logo.jpg" alt="logo" height="25" width="26" class="logo">
                <h5 id="username">User</h5>
             </div>
-            <div class="accordion accordion-flush mt-3 m-1 border border-black" id="accordionFlushExample">
+            <div class="accordion accordion-flush mt-3 m-1 border border-black" id="accardion">
                <div class="accordion-item bg-dark">
                   <h2 class="accordion-header">
                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -88,7 +91,7 @@
                      </button>
                   </h2>
                   <div id="flush-collapseOne" class="accordion-collapse collapse bg-dark show"
-                     data-bs-parent="#accordionFlushExample">
+                     data-bs-parent="#accardion">
                      <div class="accordion-body bg-light">
                         <div class="border border-black rounded inventory"></div>
                      </div>
@@ -103,7 +106,7 @@
                      </button>
                   </h2>
                   <div id="flush-collapseTwo" class="accordion-collapse collapse bg-dark"
-                     data-bs-parent="#accordionFlushExample">
+                     data-bs-parent="#accardion">
                      <div class="accordion-body">
                         <h5><u id="settings_lang">Settings</u></h5>
                         <div class="buttons">
@@ -137,7 +140,7 @@
                      </button>
                   </h2>
                   <div id="flush-collapseThree" class="accordion-collapse collapse bg-dark"
-                     data-bs-parent="#accordionFlushExample">
+                     data-bs-parent="#accardion">
                      <div class="accordion-body bg-dark">
                         <div class="profile">
                            <img src="./assets/img/stalker_logo.jpg" alt="logo" height="25" width="26" class="logo">
@@ -190,11 +193,11 @@
          </div>
       </div>
    </div>
-   <div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal fade" id="info-modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog">
          <div class="modal-content" id="info-modal-content">
             <div class="modal-header">
-               <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="modal-title"></span></h1>
+               <h1 class="modal-title fs-5" id="modal"><span id="modal-title"></span></h1>
                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"><span id="modal-body"></span></div>

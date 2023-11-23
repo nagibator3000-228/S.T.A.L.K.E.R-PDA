@@ -18,6 +18,13 @@ var psy_heal;
 var temp_heal;
 var rotate;
 
+var healing_health = false;
+
+var healing_rad = false;
+var healing_bio = false
+var healing_temp = false;
+var psy_flag = false;
+
 var infect;
 var background_infect;
 
@@ -89,7 +96,7 @@ const infectionPoints = [
    { name: "bio", latitude: 47.998126, longitude: 8.821418, radius: 2, strength: 2 },
    { name: "rad", latitude: 47.998162, longitude: 8.820865, radius: 2, strength: 2 },
    { name: "rad", latitude: 47.998664, longitude: 8.818218, radius: 3, strength: 3 },
-   { name: "rad", latitude: 47.998927, longitude: 8.819972, radius: 5, strength: 4 }
+   { name: "rad", latitude: 47.998927, longitude: 8.819972, radius: 5, strength: 4 },
 ];
 
 async function connectToServer() {
@@ -160,6 +167,9 @@ async function connectToServer() {
 }
 
 window.addEventListener('load', (event) => {
+   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
    navigator.wakeLock.request('screen')
       .then((wakeLockObj) => {
          console.log('Экран заблокирован и будет включен всегда');
@@ -194,15 +204,15 @@ window.addEventListener('load', (event) => {
       });
 
       axios.get("https://api.tomorrow.io/v4/weather/forecast?location=47.998610,8.820886&apikey=KdCGsmClBZNE67vhOD6jdkQ3D14QBRsk")
-      .then((res) => {
-         const temperature = Math.round(parseFloat(res.data.timelines.minutely[0].values.temperature));
-         temp_min = temperature;
-         document.getElementById("temp").innerText = temperature;
-      })
-      .catch((e) => {
-         console.error('Ошибка запроса', e);
-         document.getElementById("temp").innerText = 23;
-      });
+         .then((res) => {
+            const temperature = Math.round(parseFloat(res.data.timelines.minutely[0].values.temperature));
+            temp_min = temperature;
+            document.getElementById("temp").innerText = temperature;
+         })
+         .catch((e) => {
+            console.error('Ошибка запроса', e);
+            document.getElementById("temp").innerText = 23;
+         });
 
       updateClock();
 
@@ -211,6 +221,9 @@ window.addEventListener('load', (event) => {
       modal = new bootstrap.Modal(document.getElementById('info-modal'));
 
       document.getElementById("noise").style = `display: none !important;`;
+      document.getElementById("bio_filter").style = `display: none !important;`;
+      document.getElementById("temp_filter").style = `display: none !important;`;
+      document.getElementById("psy_filter").style = `display: none !important;`;
 
       // getPermission();
 
@@ -273,6 +286,17 @@ function successCallback(position) {
 
 function errorCallback(error) {
    console.error(`Error: ${new Error(error)}`);
+}
+
+function toggle_noise() {
+   let rot_flag = true;
+   let rot;
+
+   rotate = setInterval(() => {
+      rot = rot_flag === true ? 0 : 180;
+      document.getElementById("noise").style = `transform: rotate(${rot}deg); display: block !important;`
+      rot_flag = !rot_flag;
+   }, 65);
 }
 
 function toggleFullScreen(element) {
@@ -415,13 +439,15 @@ function check_stats() {
    }
 
    if (infections.rad < rad_min) infections.rad = rad_min;
+   if (infections.temp < temp_min) infections.temp = temp_min;
    if (infections.bio < 0) infections.bio = 0;
    if (infections.psy < 0) infections.psy = 0;
 }
 
 function checkInfectionStatus() {
-   updateClock();
    // console.log(`infect_flag ${infect_flag} | health_flag ${health_flag} | rad sound ${rad_sound} | infect interval ${infect_interval}`)
+   updateClock();
+
    if (!infect_flag) {
       health_flag = false;
       infect_flag = true;
@@ -432,6 +458,7 @@ function checkInfectionStatus() {
          { latitude: coords.lat, longitude: coords.long },
          { latitude: point.latitude, longitude: point.longitude }
       );
+
       if (parseFloat(distance) <= point.radius) {
          if (point.background) {
             if (!background_flag) {
@@ -462,20 +489,27 @@ function checkInfectionStatus() {
                            rad_sound = true;
                            document.getElementById("radiation").play();
 
-                           let rot_flag = true;
-                           let rot;
-
-                           rotate = setInterval(() => {
-                              rot = rot_flag === true ? 0 : 180;
-                              document.getElementById("noise").style = `transform: rotate(${rot}deg); display: block !important;`
-                              // console.log(`noise ${rot} ${rot_flag}`);
-                              rot_flag = !rot_flag;
-                           }, 65);
+                           toggle_noise();
                         }
                         break;
-                     case 'bio': infections.bio += point.strength; document.getElementById("bio").innerText = parseInt(infections.bio); health -= parseInt(infections.bio / 10); break;
-                     case 'psy': infections.psy += point.strength; document.getElementById("psy").innerText = parseInt(infections.psy); health -= parseInt(infections.psy / 10); break;
-                     case 'temp': infections.temp += point.strength; document.getElementById("temp").innerText = parseInt(infections.temp); health -= parseInt(infections.temp / 10); break;
+                     case 'bio':
+                        infections.bio += point.strength;
+                        document.getElementById("bio").innerText = parseInt(infections.bio);
+                        health -= parseInt(infections.bio / 10);
+                        document.getElementById("bio_filter").style = `display: block !important;`;
+                        break;
+                     case 'psy':
+                        infections.psy += point.strength;
+                        document.getElementById("psy").innerText = parseInt(infections.psy);
+                        health -= parseInt(infections.psy / 10);
+                        document.getElementById("psy_filter").style = `display: block !important;`;
+                        break;
+                     case 'temp':
+                        infections.temp += point.strength;
+                        document.getElementById("temp").innerText = parseInt(infections.temp);
+                        health -= parseInt(infections.temp / 10);
+                        document.getElementById("temp_filter").style = `display: block !important;`;
+                        break;
                      default: console.log(`Erorr: ${new Error("undefined infection")}`);
                   }
                }, 500);
@@ -486,18 +520,12 @@ function checkInfectionStatus() {
       }
    });
 };
-
+ 
 function checkHealth() {
    health_flag = true;
    flag = false;
    background_flag = false;
    console.log(rad_sound, health_flag, flag);
-
-   var healing_health = false;
-
-   var healing_rad = false;
-   var healing_bio = false
-   var healing_temp = false;
 
    clearInterval(infect);
    infect_interval = false;
@@ -522,8 +550,7 @@ function checkHealth() {
             clearInterval(rad_heal);
             clearInterval(rotate);
             healing_rad = false;
-            console.log(infections.rad, rad_min, healing_rad);
-            clearInterval(rad_heal);
+            // console.log(infections.rad, rad_min, healing_rad);
          }
          document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
       }, 1 * 1000);
@@ -532,34 +559,58 @@ function checkHealth() {
    if (!healing_bio) {
       healing_bio = true;
       bio_heal = setInterval(() => {
-         if (infections.bio !== 0) infections.bio -= 0.5;
-         else clearInterval(bio_heal); healing_bio = false;
+         if (infections.bio !== 0) {
+            infections.bio -= 0.5;                       
+            document.getElementById("bio_filter").style = `display: none !important;`;
+         }
+         else {
+            clearInterval(bio_heal);
+            healing_bio = false;
+         }
          document.getElementById("bio").innerHTML = `${parseInt(infections.bio)}`;
          clearInterval(bio_heal);
       }, 2.5 * 1000);
    }
 
-   let psy_flag = false;
-
    if (!psy_flag) {
       psy_flag = true;
-      setTimeout(() => {
-         psy_warn_flag = false;
-         infections.psy = psy_min + 5;
-         infections.rad !== rad_min ? infections.rad /= 2 : infections.rad = rad_min;
-         infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
-         health = 65 - psy_min + 5;
-         psy_flag = false;
-      }, 7 * 60 * 1000);
+      // document.getElementById("psy_filter").style = `display: none !important;`;
+      // setTimeout(() => {
+      //    psy_warn_flag = false;
+      //    infections.psy = psy_min + 5;
+      //    infections.rad !== rad_min ? infections.rad /= 2 : infections.rad = rad_min;
+      //    infections.bio !== 0 ? infections.bio /= 2 : infections.bio = 0;
+      //    health = 65 - psy_min + 5;
+      //    psy_flag = false;
+      // }, 7 * 60 * 1000);
    }
 
    if (!healing_temp) {
       healing_temp = true;
       temp_heal = setInterval(() => {
-         if (infections.temp !== temp_min) infections.temp -= 0.5;
-         else clearInterval(temp_heal); healing_temp = false;
-         document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
-         clearInterval(temp_heal);
+         if (temp_min < 0) {
+            if (infections.temp !== temp_min) {
+               infections.temp += 0.5;
+               document.getElementById("temp_filter").style = `display: none !important;`;
+            }
+            else {
+               clearInterval(temp_heal); 
+               healing_temp = false;
+            }
+            document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
+            clearInterval(temp_heal);
+         } else {
+            if (infections.temp !== temp_min) {
+               infections.temp -= 0.5;
+               document.getElementById("temp_filter").style = `display: none !important;`;
+            }
+            else {
+               clearInterval(temp_heal); 
+               healing_temp = false;
+            }
+            document.getElementById("temp").innerHTML = `${parseInt(infections.temp)}`;
+            clearInterval(temp_heal);
+         }
       }, 250);
    }
 }
