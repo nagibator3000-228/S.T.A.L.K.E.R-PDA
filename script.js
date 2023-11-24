@@ -449,7 +449,6 @@ function checkInfectionStatus() {
    updateClock();
 
    if (!infect_flag) {
-      health_flag = false;
       infect_flag = true;
    }
    if (infect_interval) infect_flag = false;
@@ -460,6 +459,7 @@ function checkInfectionStatus() {
       );
 
       if (parseFloat(distance) <= point.radius) {
+         health_flag = true;
          if (point.background) {
             if (!background_flag) {
                background_flag = true;
@@ -516,13 +516,12 @@ function checkInfectionStatus() {
             }
          }
       } else {
-         if (!health_flag) checkHealth();
+         if (health_flag) checkHealth();
       }
    });
 };
  
 function checkHealth() {
-   health_flag = true;
    flag = false;
    background_flag = false;
    console.log(rad_sound, health_flag, flag);
@@ -554,7 +553,7 @@ function checkHealth() {
          }
          document.getElementById("rad").innerHTML = `${parseInt(infections.rad)}`;
       }, 1 * 1000);
-   }
+   } 
 
    if (!healing_bio) {
       healing_bio = true;
