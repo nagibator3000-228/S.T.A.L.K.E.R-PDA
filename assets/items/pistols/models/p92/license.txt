@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nerf Triad EX-3 Gun 3D Color Scan
+* source:	https://sketchfab.com/3d-models/nerf-triad-ex-3-gun-3d-color-scan-2931a69640624ec0bb4245832dff1c88
+* author:	Laser Design (https://sketchfab.com/Laserdesign)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nerf Triad EX-3 Gun 3D Color Scan" (https://sketchfab.com/3d-models/nerf-triad-ex-3-gun-3d-color-scan-2931a69640624ec0bb4245832dff1c88) by Laser Design (https://sketchfab.com/Laserdesign) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

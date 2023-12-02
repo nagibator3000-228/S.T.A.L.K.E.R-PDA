@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nerf Ball
+* source:	https://sketchfab.com/3d-models/nerf-ball-d8c0f8015e044371a83a3ccf7e5e8566
+* author:	jeffduvernay (https://sketchfab.com/jeffduvernay)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nerf Ball" (https://sketchfab.com/3d-models/nerf-ball-d8c0f8015e044371a83a3ccf7e5e8566) by jeffduvernay (https://sketchfab.com/jeffduvernay) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

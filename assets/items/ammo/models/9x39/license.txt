@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nerf Dart/Bullet
+* source:	https://sketchfab.com/3d-models/nerf-dartbullet-62845af2f0e641f7b8c93018bfc35c12
+* author:	jacobnich683 (https://sketchfab.com/jacobnich683)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nerf Dart/Bullet" (https://sketchfab.com/3d-models/nerf-dartbullet-62845af2f0e641f7b8c93018bfc35c12) by jacobnich683 (https://sketchfab.com/jacobnich683) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
