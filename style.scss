@@ -172,7 +172,7 @@ h5 {
 }
 
 .PUZ-island {
-   border-radius: 10%;
+   border-radius: 8%;
    background-color: rgb(171, 171, 171);
    position: fixed;
    opacity: 0.6;
@@ -180,7 +180,7 @@ h5 {
    width: 215px;
    z-index: 200;
    display: flex;
-   margin-top: 0.4em;
+   margin-top: 0.54em;
    transition: 600ms;
    &>i {
       visibility: hidden;
