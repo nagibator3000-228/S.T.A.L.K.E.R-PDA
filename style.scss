@@ -208,7 +208,7 @@ h5 {
    animation-direction:alternate;
    animation-fill-mode: both;
    animation-timing-function: ease-out;
-   border: 2px solid rgb(77, 77, 77);
+   // border: 2px solid rgb(77, 77, 77);
    background-color: rgb(21, 21, 21);
    opacity: 0.9;
    &>i {
@@ -227,8 +227,8 @@ h5 {
    }
    & ~.custom-container {
       filter: blur(5px);
-      scale: 0.93;
-      transition: 300ms;
+      scale: 0.96;
+      transition: 700ms;
    }   
 }
 
