@@ -2,6 +2,8 @@ var tick_rate = 60;
 
 var group = '';
 
+let date = new Date();
+
 var infections = {
    rad: 20,
    bio: 0,
@@ -259,6 +261,7 @@ function toggleFullScreen(element) {
 
 function check_stats() {
    checkInfectionStatus();
+   document.getElementById("clock").innerText = `${date.getHours()}:${date.getMinutes()}`;
 
    var healthElement = document.getElementById("health");
    var currentHealth = parseInt(healthElement.innerText);
