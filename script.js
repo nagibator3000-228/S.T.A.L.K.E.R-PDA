@@ -601,3 +601,41 @@ document.body.addEventListener("click", () => {
       }
    }
 });
+
+async function startCamera() {
+   const video = document.getElementById('video');
+   const canvas = document.getElementById('canvas');
+   const context = canvas.getContext('2d');
+
+   try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+
+      video.addEventListener('play', () => {
+            const scanQRCode = () => {
+               if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                  canvas.height = video.videoHeight;
+                  canvas.width = video.videoWidth;
+                  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                  if (document.getElementById("camera").classList.contains("active")) {
+                     var code = jsQR(imageData.data, imageData.width, imageData.height);
+                  }
+
+                  if (code) {
+                     console.log(`QR-код: ${code.data}`);
+                     requestAnimationFrame(scanQRCode);
+                  } else {
+                     requestAnimationFrame(scanQRCode);
+                  }
+               }
+            };
+         scanQRCode();
+      });
+   } catch (err) {
+      console.error("Ошибка доступа к камере:", err);
+   }
+}
+
+startCamera();

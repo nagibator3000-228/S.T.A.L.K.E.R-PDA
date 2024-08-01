@@ -1,6 +1,10 @@
 @import url('https://unpkg.com/css.gg@2.0.0/icons/css/media-podcast.css');
-@import url('https://unpkg.com/css.gg@2.0.0/icons/css/bolt.css');
 @import url('https://unpkg.com/css.gg@2.0.0/icons/css/user.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/user-list.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/dollar.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/key.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/mail.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/repeat.css');
 
 *, html {
    border-radius: border-box;
@@ -188,11 +192,6 @@ h5 {
       margin-top: -25em;
       filter: brightness(0);
    }
-   & p {
-      visibility: hidden;
-      color: rgb(42, 42, 42);
-      font-size: x-small;
-   }
 }
 
 .custom-container {
@@ -218,14 +217,6 @@ h5 {
       margin-top: 1.4em;
       transition: 690ms;
    }
-   & p {
-      visibility: visible;
-      color: whitesmoke;
-   }
-   & p:active {
-      filter: blur(2px);
-      transition: all 300ms;
-   }
    & ~.custom-container {
       filter: blur(5px);
       scale: 0.96;
@@ -242,24 +233,32 @@ h5 {
 }
 
 .notifications {
-   height: 100% !important;
-   width: 100% !important;
+   height: 100%;
+   width: 100%;
 }
 
-.active .not {
-   display: flex !important;
-   justify-content: center !important;
-   align-items: center !important;
-   height: 100% !important;
-   width: 100% !important;
+.not {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   & p {
+      color: whitesmoke;
+      font-size: x-small;
+   }
+   & p:active {
+      filter: blur(2px);
+      transition: all 300ms;
+   }
 }
 
 .container {
-   margin-left: 20px !important;
+   margin-left: 2.3rem !important;
 }
 
 .grid {
-   margin-top: 2.2em;
+   margin-top: 2.7rem;
    position: relative;
    & button {
       background-color: rgb(57, 57, 57);
@@ -274,7 +273,7 @@ h5 {
       cursor: pointer;
    }
    & .col {
-      margin: 22px 0 22px 0;
+      margin: 6px 0 6px 0;
       padding: 0;
    }
 }
@@ -303,21 +302,41 @@ h5 {
    }
 }
 
+.payments i {
+   margin-left: 11px;
+}
+
+.squad i {
+   margin-left: 3px;
+}
+
+.key i {
+   margin-left: 4px;
+}
+
+.mail i {
+   margin-left: 4px;
+}
+
+.trade i {
+   margin-left: 6px;
+}
+
 #carouselExample {
    width: 100%;
    height: 100%;
    visibility: hidden;
 }
 
-#overlay {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   display: none;
-   z-index: 200;
-}
+// #overlay {
+//    position: fixed;
+//    top: 0;
+//    left: 0;
+//    width: 100%;
+//    height: 100%;
+//    display: none;
+//    z-index: 200;
+// }
 
 #noise {
    display: none;
