@@ -573,3 +573,28 @@ function checkHealth() {
 //       console.log(e);
 //    });
 // }
+
+
+const Island = document.getElementById("PUZ-island");
+let Island_event;
+
+Island.addEventListener("click", () => {
+   if (!Island.classList.contains("PUZ-island_active")) {
+      Island.classList.add("PUZ-island_active");
+
+   }
+});
+
+document.body.addEventListener("click", () => {
+   if (Island.classList.contains("PUZ-island_active")) {
+      Island.addEventListener("click", (e) => {
+         Island_event = e;
+      });
+      if (typeof (Island_event) != 'object') {
+         Island.classList.remove("PUZ-island_active");
+         Island_event = 0;
+      } else {
+         Island_event = 0;
+      }
+   }
+});

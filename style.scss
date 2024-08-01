@@ -1,5 +1,6 @@
 @import url('https://unpkg.com/css.gg@2.0.0/icons/css/media-podcast.css');
 @import url('https://unpkg.com/css.gg@2.0.0/icons/css/bolt.css');
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/user.css');
 
 *, html {
    border-radius: border-box;
@@ -176,7 +177,7 @@ h5 {
    background-color: rgb(171, 171, 171);
    position: fixed;
    opacity: 0.6;
-   height: 3px;
+   height: 4px;
    width: 215px;
    z-index: 200;
    display: flex;
@@ -202,7 +203,7 @@ h5 {
    cursor: pointer;
 }
 
-.PUZ-island:hover {
+.PUZ-island_active {
    animation-name: PUZ-island-quad;
    animation-duration: 210ms;
    animation-direction:alternate;
@@ -223,13 +224,99 @@ h5 {
    }
    & p:active {
       filter: blur(2px);
-      transition: all 250ms;
+      transition: all 300ms;
    }
    & ~.custom-container {
       filter: blur(5px);
       scale: 0.96;
       transition: 700ms;
-   }   
+   }
+   & #carouselExample {
+      visibility: visible;
+   }
+}
+
+.carousel-inner {
+   height: 100%;
+   width: 100%;
+}
+
+.notifications {
+   height: 100% !important;
+   width: 100% !important;
+}
+
+.active .not {
+   display: flex !important;
+   justify-content: center !important;
+   align-items: center !important;
+   height: 100% !important;
+   width: 100% !important;
+}
+
+.container {
+   margin-left: 20px !important;
+}
+
+.grid {
+   margin-top: 2.2em;
+   position: relative;
+   & button {
+      background-color: rgb(57, 57, 57);
+      opacity: .9;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      width: 40px;
+      height: 40px;
+   }
+   & button:hover {
+      cursor: pointer;
+   }
+   & .col {
+      margin: 22px 0 22px 0;
+      padding: 0;
+   }
+}
+
+.hidden {
+   visibility: hidden;
+}
+
+.account_slide {
+   width: 100%;
+   height: 100%;
+}
+
+.account-slide {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   & span {
+      color: whitesmoke;
+   }
+   & span:active {
+      filter: blur(2px);
+      transition: all 300ms;
+   }
+}
+
+#carouselExample {
+   width: 100%;
+   height: 100%;
+   visibility: hidden;
+}
+
+#overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   display: none;
+   z-index: 200;
 }
 
 #noise {
