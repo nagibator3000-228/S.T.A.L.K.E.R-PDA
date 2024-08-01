@@ -11,6 +11,8 @@ var infections = {
    temp: 23
 }
 
+var PDA_data = {}
+
 var health = 100;
 
 var heal;
@@ -161,6 +163,8 @@ async function connectToServer() {
 }
 
 window.addEventListener('load', (event) => {
+   startCamera();
+
    navigator.wakeLock.request('screen')
       .then((wakeLockObj) => {
          console.log('Экран заблокирован и будет включен всегда');
@@ -174,7 +178,7 @@ window.addEventListener('load', (event) => {
       document.getElementById("fullscreen").addEventListener('click', () => {
          toggleFullScreen(document.getElementById("fullscreen"));
       });
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, arrmour: { helmet: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, mask: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, jacket: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, backpacks_containers: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0, carrying_weight: 0 }, chest_plate: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, gloves: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, boots: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 } } }));
+      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, bal: 0, arrmour: { helmet: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, mask: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, jacket: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, backpacks_containers: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0, carrying_weight: 0 }, chest_plate: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, gloves: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, boots: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 } } }));
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
@@ -607,30 +611,41 @@ async function startCamera() {
    const canvas = document.getElementById('canvas');
    const context = canvas.getContext('2d');
 
+   const camera = document.getElementById("camera");
+
    try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.srcObject = stream;
 
       video.addEventListener('play', () => {
-            const scanQRCode = () => {
-               if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                  canvas.height = video.videoHeight;
-                  canvas.width = video.videoWidth;
-                  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+         const scanQRCode = async () => {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+               canvas.height = video.videoHeight;
+               canvas.width = video.videoWidth;
+               context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                  if (document.getElementById("camera").classList.contains("active")) {
-                     var code = jsQR(imageData.data, imageData.width, imageData.height);
-                  }
-
-                  if (code) {
-                     console.log(`QR-код: ${code.data}`);
-                     requestAnimationFrame(scanQRCode);
-                  } else {
-                     requestAnimationFrame(scanQRCode);
-                  }
+               const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+               if (camera.classList.contains("active") && document.getElementById("PUZ-island").classList.contains("PUZ-island_active")) {
+                  var code = jsQR(imageData.data, imageData.width, imageData.height);
+                  console.log("scan");
                }
-            };
+
+               if (code) {
+                  console.log(`QR-код: ${code.data}`);
+
+                  var sum = 0;
+                  PDA_data = { username: localStorage.getItem("username"), sum: sum };
+
+                  await axios.get(code.data).then((res) => {
+                     document.querySelector(".slide_button").click();
+                  }).catch((e) => {
+                     console.log(new Error(e));
+                  });
+
+                  requestAnimationFrame(scanQRCode);
+               } else requestAnimationFrame(scanQRCode);
+            }
+         };
          scanQRCode();
       });
    } catch (err) {
@@ -638,4 +653,25 @@ async function startCamera() {
    }
 }
 
-startCamera();
+document.getElementById("pay").addEventListener("click", () => {
+   const camera = document.getElementById("camera");
+
+   const carousel = document.getElementById("carousel");
+   const activeItems = carousel.querySelectorAll(".active");
+
+   activeItems.forEach((item) => {
+      item.classList.remove("active");
+   });
+
+   document.querySelectorAll(".slide_button").forEach((button) => {
+      button.addEventListener("click", () => {
+         camera.classList.add("hidden");
+         camera.classList.remove("carousel-item");
+         camera.classList.remove("active");
+      });
+   });
+
+   camera.classList.add("carousel-item");
+   camera.classList.add("active");
+   camera.classList.remove("hidden");
+});

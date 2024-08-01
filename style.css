@@ -221,7 +221,7 @@ h5 {
   scale: 0.96;
   transition: 700ms;
 }
-.PUZ-island_active #carouselExample {
+.PUZ-island_active #carousel {
   visibility: visible;
 }
 
@@ -320,7 +320,7 @@ h5 {
   margin-left: 6px;
 }
 
-#carouselExample {
+#carousel {
   width: 100%;
   height: 100%;
   visibility: hidden;

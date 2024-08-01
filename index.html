@@ -65,8 +65,8 @@
    </audio>
    <div class="PUZ-island top-0 start-50 translate-middle" id="PUZ-island">
       <i class="gg-media-podcast position-absolute top-0 start-50 translate-middle"></i>
-      <div id="carouselExample" class="carousel slide" data-bs-touch="true">
-         <div class="carousel-inner">
+      <div id="carousel" class="carousel slide" data-bs-touch="true">
+         <div class="carousel-inner" id="carousel">
             <div class="carousel-item active notifications">
                <div class="not">
                   <p>No notifications</p>
@@ -76,7 +76,7 @@
                <div class="container grid">
                   <div class="row">
                      <div class="col squad"><button><i class="gg-user-list"></i></button></div>
-                     <div class="col payments"><button disabled><i class="gg-dollar"></i></button></div>
+                     <div class="col payments"><button id="pay"><i class="gg-dollar"></i></button></div>
                   </div>
                   <div class="row">
                      <div class="col key"><button disabled><i class="gg-key"></i></button></div>
@@ -93,16 +93,16 @@
                   <span id="username"></span>
                </div>
             </div>
-            <div class="carousel-item mt-3" id="camera">
-               <video id="video" width="242" height="210" autoplay></video>
-               <canvas id="canvas" width="242" height="210" style="display:none;"></canvas>
+            <div class="mt-2 hidden" id="camera">
+               <video id="video" width="242" height="235" autoplay></video>
+               <canvas id="canvas" width="242" height="235" style="display:none;"></canvas>
             </div>
          </div>
-         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+         <button class="carousel-control-prev slide_button" type="button" data-bs-target="#carousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
          </button>
-         <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+         <button class="carousel-control-next slide_button" type="button" data-bs-target="#carousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
          </button>
@@ -253,7 +253,7 @@
    <div class="d-flex nowrap position-absolute justify-content-end" style="padding-right: 16px; width: calc(100%);">
       <!--PUZ Engine Watermark-->
       <p style="color:blueviolet">PUZ</p>
-      <p class="text-primary ms-1"> Engine 1.1 Alpha</p>
+      <p class="text-primary ms-1"> Engine 1.02 Alpha</p>
    </div>
 </body>
 </html>
