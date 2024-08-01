@@ -638,6 +638,12 @@ async function startCamera() {
 
                   await axios.get(code.data).then((res) => {
                      document.querySelector(".slide_button").click();
+
+                     if (res.status < 300) {
+                        if (vibrate) navigator.vibrate(500);
+
+                        document.getElementById("success").play();
+                     }
                   }).catch((e) => {
                      console.log(new Error(e));
                   });
