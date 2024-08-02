@@ -6,7 +6,8 @@
 @import url("https://unpkg.com/css.gg@2.0.0/icons/css/key.css");
 @import url("https://unpkg.com/css.gg@2.0.0/icons/css/mail.css");
 @import url("https://unpkg.com/css.gg@2.0.0/icons/css/repeat.css");
-*, html {
+*,
+html {
   border-radius: border-box;
   margin: 0;
   padding: 0;
@@ -187,6 +188,9 @@ h5 {
   margin-top: 0.54em;
   transition: 600ms;
 }
+.PUZ-island:hover {
+  cursor: pointer;
+}
 .PUZ-island > i {
   visibility: hidden;
   margin-top: -25em;
@@ -195,10 +199,6 @@ h5 {
 
 .custom-container {
   transition: all 200ms;
-}
-
-.PUZ-island:hover {
-  cursor: pointer;
 }
 
 .PUZ-island_active {
@@ -318,6 +318,42 @@ h5 {
 
 .trade i {
   margin-left: 6px;
+}
+
+.sum-container {
+  width: 100%;
+  height: 225px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  position: absolute;
+}
+.sum-container > #sum-input {
+  position: absolute;
+  background-color: rgb(0, 0, 0);
+  height: 14px;
+  width: 90px;
+  border: none;
+  border-radius: 18px;
+  z-index: 201;
+  color: white;
+}
+.sum-container > #sum-input:focus {
+  border: 1px solid rgb(177, 177, 177);
+  transition: 60ms;
+  border-radius: 5px;
+}
+
+#balance {
+  margin-left: 32px;
+  padding-bottom: 14px;
+  color: white;
+  z-index: 201;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+}
+#balance::after {
+  content: "₽";
 }
 
 #carousel {

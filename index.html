@@ -97,9 +97,12 @@
                </div>
             </div>
             <div class="mt-2 hidden" id="camera">
+               <div class="sum-container">
+                  <input type="number" id="sum-input" maxlength="6">
+                  <p id="balance" class="position-absolute top-100 start-0 translate-middle">0</p>
+               </div>
                <video id="video" width="240" height="231" autoplay></video>
                <canvas id="canvas" width="240" height="231" style="display:none;"></canvas>
-               <i class="gg-check-o hidden" id="check_icon"></i>
             </div>
          </div>
          <button class="carousel-control-prev slide_button" type="button" data-bs-target="#carousel" data-bs-slide="prev">

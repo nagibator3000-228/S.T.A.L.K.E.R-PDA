@@ -33,6 +33,7 @@ $(document).ready(() => {
                });
                let username = document.getElementById("username").value;
                localStorage.setItem("username", username.trim());
+               localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, bal: 500, arrmour: { helmet: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, mask: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, jacket: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, backpacks_containers: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0, carrying_weight: 0 }, chest_plate: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, gloves: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, boots: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 } } }));
                setTimeout(() => {
                   window.location.href = '../index.html'; 
                }, 700);

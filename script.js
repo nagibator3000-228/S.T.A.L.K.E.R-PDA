@@ -172,13 +172,15 @@ window.addEventListener('load', (event) => {
       .catch((error) => {
          console.error('Ошибка при запросе блокировки экрана:', error);
       });
-   if (localStorage.getItem("username") === null) {
+   if (localStorage.getItem("username") === null || JSON.parse(localStorage.getItem('user')).bal == undefined) {
       window.location.href = '/login';
    } else {
       document.getElementById("fullscreen").addEventListener('click', () => {
          toggleFullScreen(document.getElementById("fullscreen"));
       });
-      localStorage.setItem('user', JSON.stringify({ username: localStorage.getItem("username"), group: null, bal: 0, arrmour: { helmet: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, mask: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, jacket: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, backpacks_containers: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0, carrying_weight: 0 }, chest_plate: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, gloves: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 }, boots: { rad: 0, bio: 0, psy: 0, temp: 0, stabble: 0, weight: 0 } } }));
+
+      document.getElementById("balance").innerText = parseInt(JSON.parse(localStorage.getItem("user")).bal);
+
       document.querySelectorAll("#username").forEach(username => {
          username.innerText = localStorage.getItem("username");
       });
@@ -537,53 +539,8 @@ function checkHealth() {
    }
 }
 
-// function check_time() {
-//    const currentTime = new Date();
-//    const currentTimeString = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
-
-//    if (toString(wibros_times).includes(currentTimeString)) {
-//       document.getElementById("wibros_start").play();
-//       console.log("wibros start");
-//       setTimeout(() => {
-//          console.log("wibros");
-//          document.getElementById("wibros").play();
-//          setTimeout(() => {
-//             console.log("wibros end");
-//             document.getElementById("wibros").pause();
-//             document.getElementById("wibros_end").play();
-//          }, 2.15 * 60 * 1000);
-//       }, 5 * 60 * 1000);
-//    }
-// }
-
-// function getPermission() {
-//    switch (Notification.permission.toLocaleLowerCase()) {
-//       case 'granted': subscribe(); break;
-//       case 'denied': console.log("shade"); break;
-//       case 'default': Notification.requestPermission((status) => {
-//          if (status === 'granted') subscribe();
-//          if (status === 'default') setTimeout(() => getPermission(), 3000);
-//       });
-//       break;
-//    }
-// }
-
-// function subscribe() {
-//    var msg = firebase.messaging();
-//    msg.requestPermission().then(() => {
-//       msg.getToken().then((token) => {
-//          console.log(token);
-//       }).catch((e) => {
-//          console.log(e);
-//       });
-//    }).catch((e) => {
-//       console.log(e);
-//    });
-// }
-
-
 const Island = document.getElementById("PUZ-island");
-let Island_event;
+var Island_event;
 
 Island.addEventListener("click", () => {
    if (!Island.classList.contains("PUZ-island_active")) {
@@ -606,6 +563,28 @@ document.body.addEventListener("click", () => {
    }
 });
 
+var sum = 0;
+
+document.getElementById("sum-input").addEventListener("change", () => {
+   const input_sum = parseInt(document.getElementById("sum-input").value);
+
+   let balance = parseInt(JSON.parse(localStorage.getItem("user")).bal);
+   document.getElementById("balance").innerText = balance;
+
+   let parsed_sum = parseInt(input_sum);
+
+   if (!isNaN(parsed_sum) && parsed_sum !== '' && parsed_sum < balance) {
+      sum = parsed_sum;
+   } else if (parsed_sum === '' || isNaN(parsed_sum)) {
+      document.getElementById("sum-input").value = '';
+      sum = 0;
+   } else {
+      document.getElementById("sum-input").value = balance;
+      sum = balance;
+   }
+   document.getElementById("balance").innerText = balance - sum;
+});
+
 async function startCamera() {
    const video = document.getElementById('video');
    const canvas = document.getElementById('canvas');
@@ -625,24 +604,37 @@ async function startCamera() {
                context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-               if (camera.classList.contains("active") && document.getElementById("PUZ-island").classList.contains("PUZ-island_active")) {
+               if (camera.classList.contains("active") && Island.classList.contains("PUZ-island_active") && sum !== 0) {
                   var code = jsQR(imageData.data, imageData.width, imageData.height);
                   console.log("scan");
+               } else if (camera.classList.contains("active") && !Island.classList.contains("PUZ-island_active")) {
+                  document.querySelector(".slide_button").click();
+
+                  Island.classList.remove("PUZ-island_active");
                }
 
                if (code) {
                   console.log(`QR-код: ${code.data}`);
 
-                  var sum = 0;
                   PDA_data = { username: localStorage.getItem("username"), sum: sum };
 
+                  
                   await axios.get(code.data).then((res) => {
                      document.querySelector(".slide_button").click();
-
+                     
                      if (res.status < 300) {
                         if (vibrate) navigator.vibrate(500);
-
+                        
                         document.getElementById("success").play();
+                        
+                        let user_copy = JSON.parse(localStorage.getItem('user'));
+                        user_copy.bal -= sum;
+                        sum = 0;
+                        document.getElementById("sum-input").value = '';
+                        localStorage.setItem('user', JSON.stringify(user_copy));
+      
+                        console.log(JSON.stringify(user_copy));
+                        
                      }
                   }).catch((e) => {
                      console.log(new Error(e));
@@ -675,6 +667,10 @@ document.getElementById("pay").addEventListener("click", () => {
          camera.classList.remove("carousel-item");
          camera.classList.remove("active");
       });
+   });
+
+   video.addEventListener("click", () => {
+      document.querySelector(".slide_button").click();
    });
 
    camera.classList.add("carousel-item");
