@@ -138,7 +138,7 @@ async function connectToServer() {
          let parsed_data = JSON.parse(data);
          console.log(parsed_data);
          if (vibrate) navigator.vibrate(120);
-         document.getElementById("task").innerHTML = `<p>${parsed_data.task}</p>`;
+         document.getElementById("task").innerHTML = `<p>${parsed_data}</p>`;
       });
 
       socket.on("clear", () => {
