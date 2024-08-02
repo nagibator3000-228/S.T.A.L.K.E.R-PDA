@@ -172,7 +172,7 @@ window.addEventListener('load', (event) => {
       .catch((error) => {
          console.error('Ошибка при запросе блокировки экрана:', error);
       });
-   if (localStorage.getItem("username") === null || JSON.parse(localStorage.getItem('user')).bal == undefined) {
+   if (localStorage.getItem("username") === null) {
       window.location.href = '/login';
    } else {
       document.getElementById("fullscreen").addEventListener('click', () => {
