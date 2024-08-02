@@ -129,12 +129,7 @@ async function connectToServer() {
       console.log("Conected");
 
       socket.on("get-task", async (data) => {
-         const rand = await Math.floor(Math.random() * 3) + 1;
-         switch (rand) {
-            case 1: document.getElementById("PDA_3").play(); break;
-            case 2: document.getElementById("PDA_2").play(); break;
-            case 3: document.getElementById("PDA_1").play(); break;
-         }
+         document.getElementById("PDA_1").play();
          let parsed_data = JSON.parse(data);
          console.log(parsed_data);
          if (vibrate) navigator.vibrate(120);
