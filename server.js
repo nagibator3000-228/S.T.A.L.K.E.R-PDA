@@ -97,7 +97,7 @@ io.on("connection", (socket) => {
       const { task, group } = JSON.parse(data);
       
       if (task !== '') {
-         io.in(group).emit('get-task', JSON.stringify(parsed_data));
+         io.in(group).emit('get-task', JSON.stringify(task));
       } else {
          io.in(group).emit('clear');
       }
